@@ -163,7 +163,7 @@ const quizStore = new Vuex.Store ({
           context.commit ( 'initQuizData' )
           files.forEach (
               file => {
-                  fetch ( `DATA/quiz/${file}.md` )
+                  fetch ( `data/quiz/${file}.md` )
                       .then (
                           result => result.text()
                               .then ( text => {
