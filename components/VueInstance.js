@@ -66,7 +66,6 @@ new Vue ( {
 		window.addEventListener ( 'resize', this.windowResized )
 		this.$on ( 'start-quiz', function ( val ) {
 				!this.login ? ( this.dialog = true ) : ( this.startQuiz = true )
-				// this.startQuiz = true
 		} )
 		this.$on ( 'exit-quiz', function () {
 				this.startQuiz = false
@@ -100,12 +99,6 @@ new Vue ( {
 				this.login = __user.fname && __user.name
 				this.login ?
 						this.$store.commit ( "setUser", __user ) : null
-		},
-    // navigationPanelHandler: function ( val ) {
-		// 		this.startNewQuiz ( val )
-    // },
-		startNewQuiz: function () {
-				console.log ( "START NEW QUIZ" )
 		},
 		windowResized () {
         this.$emit ( 'win-resize' )
