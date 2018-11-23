@@ -2,9 +2,7 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8">
-    <title>JS-courseware</title>
-    <script src="https://www.gstatic.com/firebasejs/ui/2.5.1/firebase-ui-auth__ru.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/2.5.1/firebase-ui-auth.css">
+    <title>JS-quiz</title>
 
     <link rel="shortcut icon" href="images/a-level-ico.png" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
@@ -12,58 +10,7 @@
   </head>
 
   <body>
-    <main id = "JS-courseware">
-      <v-app dark class = "main-content">
-            <v-toolbar flat class = "primary" app v-if = "!startQuiz">
-                <v-btn @click.stop = "drawer = !drawer" dark color = "primary" icon>
-                    <v-icon>menu</v-icon>
-                </v-btn>
-
-                <v-toolbar-title>{{ currentSectionId }}</v-toolbar-title>
-                <v-spacer></v-spacer>
-                <user-info  v-if = "user"></user-info>
-                <toggle-buttons :__buttons = "sectionMenu"
-                                class = "transparent">
-                </toggle-buttons>
-                <v-menu offset-y>
-                    <v-btn icon slot = "activator">
-                        <v-icon>more_vert</v-icon>
-                    </v-btn>
-                    <v-list>
-                        <v-list-tile :disabled = "user" @click = "startUserLogin">
-                            <v-list-tile-title>Sign In</v-list-tile-title>
-                        </v-list-tile>
-                        <v-list-tile @click = "startNewQuiz">
-                            <v-list-tile-title>Quiz</v-list-tile-title>
-                        </v-list-tile>
-                        <v-list-tile @click = "startChat">
-                            <v-list-tile-title>Chat</v-list-tile-title>
-                        </v-list-tile>
-                    </v-list>
-                </v-menu>
-            </v-toolbar>
-            <router-view></router-view>
-
-            <v-footer class="glass" app>
-              <img src = "./images/a-level.png" width="100">
-              <v-spacer></v-spacer>
-              <v-tooltip bottom nudge-top="-30">
-                <span slot="activator">
-                  &copy;&nbsp;Irina Fylyppova 2017
-                </span>
-                <span>
-                  <img src="./images/my-photo.png" width="80">
-                </span>
-              </v-tooltip>
-            </v-footer>
-            <login-component v-if = "userLoginDialog"></login-component>
-            <full-screen-chat :user = "user" :dialog = "chatDialog"></full-screen-chat>
-
-            <quiz-component v-if = "perspectiveReady && quizReady && startQuiz">
-            </quiz-component>
-        <nav-panel :states = "mainMenuItems"></nav-panel>
-      </v-app>
-    </main>
+    <main id = "JS-quiz"></main>
     <script src = "./build/index.js"></script>
   </body>
 

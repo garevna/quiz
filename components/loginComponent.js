@@ -3,65 +3,81 @@
 const LoginComponent = ( 'login-component', {
 	data: function () {
 		return {
-			__route: '/vue-course.github.io/#/',
-			uiConfig: {
-				callbacks: {
-					signInSuccess: ( currentUser, credential, redirectUrl ) => {
-						this.$root.$store.dispatch ( 'registerUser', currentUser )
-						var loginWidget = document.getElementById ( "firebaseui-auth-container" )
-						if ( loginWidget ) loginWidget.parentNode.removeChild ( loginWidget )
-						this.$root.$emit ( 'closeCurrentDialog' )
-						return true
-					},
-					uiShown: function() {
-						//console.info ( 'The widget is rendered' )
-					}
-				},
-				// Will use popup for IDP Providers sign-in flow instead of the default, redirect
-				signInFlow: 'popup',
-				signInSuccessUrl: this.__route,
-				signInOptions: [
-					firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-					firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-					firebase.auth.GithubAuthProvider.PROVIDER_ID,
-					firebase.auth.EmailAuthProvider.PROVIDER_ID,
+				fname: this.$root.$store.state.userInfo.fname,
+				name: this.$root.$store.state.userInfo.name,
+				photoURL: this.$root.$store.state.userInfo.photoURL,
+				nameRules: [
+						v => !!v || 'Обязательное поле',
+						v => (v && (/[А-Я, а-я]*/.test(v)) && v.length <= 20) || 'Не более 20 символов кириллицы'
+						// v => /[А-Я, а-я]*/.test(v) || 'Кириллицей, пожалуйста'
 				],
-				tosUrl: this.__route
-			}
+				urlRules: [
+			      v => ( v && /^https{0,1}:\/\/[\w]+\.[\w]{2,3}/.test(v) ) || 'Некорректный URL'
+		    ],
 		}
 	},
 	computed: {
-		user: function () {
-			return this.$root.$store.user
-		}
+
 	},
 	template: `
-        	<v-layout row justify-center>
-            		<v-btn  icon dark class = "transparent"
-                      		@click.native = "sendCloseEvent">
-                		<v-icon> close </v-icon>
-              		</v-btn>
-        	</v-layout>`,
+	<v-container grid-list-lg class="transparent" style="max-width: 500px;">
+				<v-card>
+					<v-card-title>
+						<span class="headline">Регистрация</span>
+					</v-card-title>
+					<v-card-text>
+						<v-container grid-list-md>
+							<v-layout wrap>
+								<v-flex xs12>
+									<v-text-field label="Фамилия"
+																required
+																v-model="fname"
+																:rules = "nameRules">
+									</v-text-field>
+								</v-flex>
+								<v-flex xs12>
+									<v-text-field label="Имя"
+																required
+																v-model="name"
+																:rules = "nameRules">
+									</v-text-field>
+								</v-flex>
+								<v-flex xs12>
+									<v-text-field label="URL фото"
+																v-model= "photoURL"
+																:rules = "urlRules"
+									>
+									</v-text-field>
+								</v-flex>
+							</v-layout>
+						</v-container>
+					</v-card-text>
+					<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn color="white" flat @click="closeDialog">Close</v-btn>
+						<v-btn color="yellow" flat @click="saveNewUser">Save</v-btn>
+					</v-card-actions>
+				</v-card>
+	</v-container>
+	`,
 	methods: {
-		sendCloseEvent: function () {
-			var loginWidget = document.getElementById ( "firebaseui-auth-container" )
-			if ( loginWidget ) loginWidget.parentNode.removeChild ( loginWidget )
-          		this.$root.$emit ( 'closeCurrentDialog' )
-      		},
+		closeDialog: function () {
+			this.$root.$emit( 'close-dialog' )
+		},
+		saveNewUser: function () {
+				this.$root.$store.commit ( 'setUser', {
+					fname: this.fname,
+					name: this.name,
+					photoURL: this.photoURL,
+					attempts: 0
+				})
+				this.$root.$store.commit ( "setCookie" )
+				this.$root.$emit( 'sign-in' )
+		}
 	},
 	mounted: function () {
-		this.__route = '/vue-course.github.io/#' + this.$route.path
-		if ( this.user ) {
-			console.info ( 'User allready signed in' )
-			console.log ( this.user )
-			this.sendCloseEvent ()
-		}
-		else {
-			var loginWidget = document.createElement ( 'figure' )
-			document.body.appendChild ( loginWidget )
-			loginWidget.id = "firebaseui-auth-container"
-			const firebaseAuthUI = new firebaseui.auth.AuthUI( firebase.auth() )
-			firebaseAuthUI.start( '#firebaseui-auth-container', this.uiConfig )
-		}
+
 	}
 })
+
+export default LoginComponent

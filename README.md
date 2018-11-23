@@ -1,6 +1,6 @@
-# js-course
+# js-quiz
 
-JS courseware for my students
+JS courseware
 Quiz for testing results
 
-demo:   https://garevna.github.io/js-course/
+demo:   https://garevna.github.io/js-quiz/

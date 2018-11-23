@@ -19,76 +19,86 @@ const QuizLevel = {
       'quiz-template': quizTemplate
   },
   computed: {
-    quizData: function () {
+    quizData () {
       return JSON.parse( JSON.stringify( this.$parent.currentQuiz ) )
     },
-    params: function () {
-        var res = []
-          if ( this.quizData.picture ) {
-            res.push ({
-                slotName: 'picture',
-                tabIcon:'insert_photo'
-            })
-          }
-          if ( this.quizData.codeJS ) {
-              res.push ({
-                  slotName: 'js',
-                  tabSymbol: "{...}"
-              })
-          }
-          if ( this.quizData.codeHTML ) {
-              res.push ({
-                  slotName: 'html',
-                  tabIcon:'code'
-              })
-          }
-          if ( this.quizData.type === 'choice' ) {
-              res.push ({
-                  slotName: 'choice',
-                  tabIcon:'touch_app'
-              })
-          }
-          if ( this.quizData.type === 'input' ) {
-              res.push ({
-                  slotName: 'text',
-                  tabIcon:'keyboard'
-              })
-          }
-          if ( this.quizData.type === 'findError' ) {
-                res.push ({
-                    slotName: 'findError',
-                    tabIcon:'developer_board'
-                })
-          }
+    results () {
+      return {
+          lives: this.$root.$store.state.quizData.lives,
+          score: this.$root.$store.state.quizData.score,
+          maxScore: this.$root.$store.state.quizData.maxScore
+      }
+    },
+    params () {
+          var res = []
+          this.quizData.picture ?
+                  res.push ({
+                      slotName: 'picture',
+                      tabIcon:'insert_photo'
+                  }) : null
+          this.quizData.js ?
+                  res.push ({
+                      slotName: 'js',
+                      tabSymbol: "{...}"
+                  }) : null
+          this.quizData.html ?
+                  res.push ({
+                      slotName: 'html',
+                      tabIcon:'code'
+                  }) : null
+          this.quizData.type === 'choice' ?
+                  res.push ({
+                      slotName: 'choice',
+                      tabIcon:'touch_app'
+                  }) : null
+          this.quizData.type === 'input' ?
+                  res.push ({
+                      slotName: 'text',
+                      tabIcon:'keyboard'
+                  }) : null
+          this.quizData.type === 'findError' ?
+                  res.push ({
+                      slotName: 'findError',
+                      tabIcon:'developer_board'
+                  }) : null
+          this.quizData.type === 'finish' ?
+                  res.push ({
+                      slotName: 'results',
+                      tabIcon:'ballot_outline'
+                  }) : null
           return res
       }
   },
   methods: {
-      validateAnswer: function () {
-          switch ( this.quizData.type ) {
-                case 'findError':
-                    var result = this.quizData.wrongContent.map ( x => x.split ( ' ' ).join('') ).join('')
-                    var etalon = this.quizData.rightContent.map ( y => y.split ( ' ' ).join('') ).join('')
-                    var tst = result === etalon
-                    this.levelResults = { right: 0 + tst, wrong: 0 + !tst }
-                    break
-                case 'choice':
-                    this.levelResults = { right: 0, wrong: 0 }
-                    for ( var i = 0; i < this.selected.length; i++ ) {
-                      if ( this.quizData.rightChoicesNums.indexOf ( this.selected [i]) < 0 )
-                            this.levelResults.wrong  += 1
-                      else  this.levelResults.right  += 1
-                    }
-                    break
-                case 'input':
-                    var res = this.answer.split ( ' ' ).join('')
-                    var tst = this.quizData.rightInput.split ( ' ' ).join('')
-                    var x = res === tst
-                    this.levelResults = { right: 0 + x, wrong: 0 + !x }
-                    break
-                default:
-                    break
+      minify ( str ) {
+          return str.split ( ' ' ).join('')
+                 .split ( String.fromCharCode(10) ).join('')
+                 .split ( String.fromCharCode(9) ).join('')
+                 .split ( String.fromCharCode(13) ).join('')
+      },
+      findError () {
+          var result = this.minify ( this.quizData.wrongContent )
+          var etalon = this.minify ( this.quizData.rightContent )
+          var tst = result === etalon
+          this.levelResults = { right: 0 + tst, wrong: 0 + !tst }
+      },
+      choice () {
+          this.levelResults = { right: 0, wrong: 0 }
+          for ( var i = 0; i < this.selected.length; i++ ) {
+            if ( this.quizData.rightChoicesNums.indexOf ( this.selected [i]) < 0 )
+                  this.levelResults.wrong  += 1
+            else  this.levelResults.right  += 1
           }
+      },
+      input () {
+          let x = this.minify ( this.answer ) === this.minify ( this.quizData.rightInput )
+          this.levelResults = { right: 0 + x, wrong: 0 + !x }
+      },
+      finish () {
+
+      },
+      validateAnswer () {
+          this [ this.quizData.type ] ()
           this.$root.$store.commit ( 'saveQuizResults', {
                 score: this.levelResults.right * this.quizData.balls,
                 lives: this.levelResults.wrong
@@ -97,21 +107,26 @@ const QuizLevel = {
           this.score = this.$root.$store.state.quizData.score
           this.showResults = true
           this.snackbar = true
-          if ( this.lives === 0 ) this.$parent.$emit ( 'looser' )
+          // if ( this.lives === 0 ) this.$parent.$emit ( 'looser' )
+
       },
-      nextLevel: function () {
+      nextLevel () {
           this.answer = ""
           this.selected = []
           this.$parent.$emit ( 'next-level' )
+          this.showResults = false
       },
-      exitQuiz: function () {
+      exitQuiz () {
           this.$root.$emit ( 'exit-quiz' )
       }
   },
   template: `
     <quiz-template :params = "params">
-        <v-card-text slot = "question">
-              {{ quizData.question }}
+        <v-card-text slot = "question" v-if = "quizData.type !== 'finish'">
+          <v-chip color="warning" text-color="white">
+            <v-avatar class="accent">{{level}}</v-avatar>
+            {{ quizData.question }}
+          </v-chip>
         </v-card-text>
 
         <v-card-text slot = "choice">
@@ -126,10 +141,12 @@ const QuizLevel = {
         </v-card-text>
 
         <v-card-media slot = "picture" v-if = "quizData.picture"
-                      :src = "quizData.picture" :height = "${window.innerHeight*0.7}">
+                      :src = "quizData.picture"
+                      :height = "${window.innerHeight*0.7}">
         </v-card-media>
 
-        <v-card-text slot = "text" v-if = "quizData.type === 'input'">
+        <v-card-text slot = "text"
+                     v-if = "quizData.type === 'input'">
             <v-text-field :suffix = "quizData.inputLegend ?
                                      quizData.inputLegend.after : ''"
                           :prefix = "quizData.inputLegend ?
@@ -140,34 +157,58 @@ const QuizLevel = {
             </v-text-field>
         </v-card-text>
 
-        <v-card-text slot = "html" v-if = "quizData.codeHTML">
-          <pre v-for = "( line, i ) in quizData.codeHTML"
-               :key = "i"
-               v-text = "line">
-          </pre>
+        <v-card-text slot = "html" v-if = "quizData.html">
+          <pre> {{quizData.html}} </pre>
         </v-card-text>
 
-        <v-card-text slot = "js" v-if = "quizData.codeJS">
-           <pre v-for="( item, index ) in quizData.codeJS"
-                :key = "index"
-                v-text = "item">
-           </pre>
+        <v-card-text slot = "js" v-if = "quizData.js">
+           <pre> {{quizData.js}} </pre>
         </v-card-text>
 
-        <v-card-text slot = "findError" v-if = "quizData.type === 'findError'">
-           <v-card-text>
-            <div v-for = "( item, index ) in quizData.wrongContent"
-                 :key = "index">
-              <v-text-field :name = "index"
+        <v-card-text slot = "findError"
+                     v-if = "quizData.type === 'findError'">
+              <v-text-field name = "wrongContent"
                             class = "success"
                             hide-details solo
                             row-height = "18"
-                            v-model = "quizData.wrongContent [ index ]">
+                            multi-line
+                            rows = 25
+                            auto-grow
+                            v-model = "quizData.wrongContent">
               </v-text-field>
-            </div>
-          </v-card-text>
         </v-card-text>
 
+        <v-card-text slot = "results"
+                     v-if = "quizData.type === 'finish'">
+            <!--<v-card>-->
+              <v-container fluid grid-list-lg>
+                  <v-avatar size = "100px">
+                    <img :src = "quizData.results.userPhoto">
+                  </v-avatar>
+                  <h3>{{quizData.results.userName}}</h3>
+              </v-container>
+            <hr/>
+              <v-container fluid grid-list-lg>
+                  <h4 class = "white--text text--shadow">
+                      <v-icon x-large class = "warning--text">
+                        assessment
+                      </v-icon>
+                      Набрано очков {{ quizData.results.score }}
+                  </h4>
+                  <h4 class = "white--text text--shadow">
+                      <v-icon x-large class= "white--text">
+                            stars
+                      </v-icon>
+                      из {{ quizData.results.maxScore }} возможных
+                  </h4>
+                  <h4 class = "white--text text--shadow">
+                      <v-icon x-large>
+                          battery_charging_full
+                      </v-icon> Осталось жизней {{ quizData.results.lives }}
+                  </h4>
+              </v-container>
+            <!--</v-card>-->
+        </v-card-text>
       </quiz-template>
   `
 }

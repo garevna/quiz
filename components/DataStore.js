@@ -4,226 +4,178 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use ( Vuex )
 
-const vueCourseStore = new Vuex.Store ({
+const quizStore = new Vuex.Store ({
   state: {
+      quizName: null,
+      quizReady: false,
       mainData: null,
-      postData: null,
       mainDataIsReady: false,
-      postDataIsReady: false,
-
-      currentSectionId: null,
-      sectionInfo: null,
-      sectionPosts: null,
-
-      currentPostId: null,
-      currentPostContent: null,
-      currentPostReadmeItems: [],
-
-      emptyPost: [{
-          head: "В работе...",
-          pict: "../images/smile-03.gif",
-          text: `К сожалению, материал еще не готов`
-      }],
-
-      user: null,
-      usersList: null,
-      messagesDate: null,
-      messagesRef: null,
-
-      messages: [],
-
-      perspectiveCenterImages: null,
-      perspectiveSideImages: null,
-      perspectiveImages: null,
-
-      quizData: null
+      quizData: {
+        score: 0,
+        maxScore: 0,
+        levels: []
+      },
+      quizRawData: null,
+      gameOverPictureURL: "https://drive.google.com/uc?export=download&id=0BxaMB69y7fvSZVhfeXVPblhxNzA",
+      successPictureURL: "https://drive.google.com/uc?export=download&id=0BxaMB69y7fvSd3U0S09YUkkwanc",
+      failurePictureURL: "https://drive.google.com/uc?export=download&id=0BxaMB69y7fvSMzNOUGc3QndEOGM",
+      userInfo: {
+          fname: "",
+          name: "",
+          photoURL: ""
+      },
+      userResults: {}
   },
   getters: {
-    currentUserId: state => {
-        var userId = 'unknown'
-        for ( var prop in state.usersList ) {
-            if ( state.usersList [ prop ].provider === state.user.provider &&
-                state.usersList [ prop ].email == state.user.email &&
-                state.usersList [ prop ].name === state.user.name ) {
-                      userId = prop
-                      break
-            }
+    quizLevelData: state => {
+        let quiz = {
+            balls: state.quizRawData.split ( /[\s]*____quizBalls____[\s]*/ )[1],
+            type: state.quizRawData.split ( /[\s]*____quizType____[\s]*/ )[1],
+            question: state.quizRawData.split ( /[\s]*____quizQuestion____[\s]*/ )[1],
+            picture: state.quizRawData.split ( /[\s]*____quizPicture____[\s]*/ )[1],
+            js: state.quizRawData.split ( /[\s]*____quizJS____[\s]*/ )[1],
+            html: state.quizRawData.split ( /[\s]*____quizHTML____[\s]*/ )[1],
+            rightInput: state.quizRawData.split ( /[\s]*____rightInput____[\s]*/ )[1],
+            inputLegendBefore: state.quizRawData.split ( /[\s]*____inputLegendBefore____[\s]*/ )[1] || "",
+            inputLegendAfter: state.quizRawData.split ( /[\s]*____inputLegendAfter____[\s]*/ )[1] || "",
+            choiceVariants: state.quizRawData.split ( /[\s]*____choiceVariants____[\s]*/ )[1],
+            rightChoicesNums: state.quizRawData.split ( /[\s]*____rightChoice____[\s]*/ )[1],
+            wrongContent: state.quizRawData.split ( /[\s]*____wrongContent____[\s]*/ )[1],
+            rightContent: state.quizRawData.split ( /[\s]*____rightContent____[\s]*/ )[1]
         }
-        return userId
+
+        quiz.balls = Number ( quiz.balls ? quiz.balls.split( /[\s]*____/ )[0] : 5 )
+
+        quiz.type = quiz.type.split( /[\s]*____/ )[0]
+
+        quiz.picture = quiz.picture ? quiz.picture.split( /[\s]*____/ )[0] : null
+
+        quiz.js = quiz.js ? quiz.js.split( /[\s]*____/ )[0] : null
+
+        quiz.html = quiz.html ? quiz.html.split( /[\s]*____/ )[0] : null
+
+        quiz.question = quiz.question.split( /[\s]*____/ )[0]
+
+        quiz.type === "choice" ? quizTypeChoice ( state.quizRawData ) :
+            quiz.type === "input" ? quizTypeInput ( state.quizRawData ) :
+                quizTypeFindError ( state.quizRawData )
+
+        function quizTypeInput () {
+            quiz.rightInput = quiz.rightInput.split( /[\s]*____/ )[0]
+            quiz.inputLegendBefore = quiz.inputLegendBefore.split( /[\s]*____/ )[0]
+            quiz.inputLegendAfter = quiz.inputLegendAfter.split( /[\s]*____/ )[0]
+        }
+        function quizTypeChoice () {
+            quiz.choiceVariants = quiz.choiceVariants
+                .split( /[\s]*____/ )[0].split( String.fromCharCode( 10 ) )
+                .map ( x => x.trim()
+                    .split( String.fromCharCode(10) ).join("")
+                    .split( String.fromCharCode(13) ).join("")
+                )
+            quiz.rightChoicesNums = quiz.rightChoicesNums
+                .split( /[\s]*____/ )[0].split(",")
+                .map ( x => Number ( x.trim()
+                      .split ( String.fromCharCode(10) ).join("")
+                      .split( String.fromCharCode(13) ).join("")
+                   )
+                )
+        }
+        function quizTypeFindError () {
+            quiz.wrongContent = quiz.wrongContent.split( /[\s]*____/ )[0]
+            quiz.rightContent = quiz.rightContent.split( /[\s]*____/ )[0]
+        }
+        return quiz
     },
-    dataIsReady:  state => state.mainDataIsReady && state.postDataIsReady,
+    dataIsReady:  state => state.mainDataIsReady,
     mainMenuReady: state => state.mainDataIsReady,
-    sectionIdDefined:  state => ( state.currentSectionId !== null ),
-    sectionIsReady:  state =>
-          state.mainDataIsReady && state.postDataIsReady &&
-                            state.currentSectionId !== null,
     mainMenuItems: state =>
           state.mainDataIsReady ?
-          state.mainData.map ( item => item.name ) : [],
-    sectionMenu: state => state.currentSectionId ? [
-              { ico: 'description', clickHandler: "gotoAbout" },
-              { ico: 'dashboard', clickHandler: "gotoDetails" }
-            ] : null
+          state.mainData.map ( item => item.name ) : []
   },
   mutations: {
-    changeMessagesData: ( state, newMessagesDate ) => {
-      if ( typeof newMessagesDate === "string" )
-                          state.messagesDate = newMessagesDate
-      else state.messagesDate = newMessagesDate.toLocaleString().split(", ")[0]
-      if ( state.messagesRef ) state.messagesRef.off()
-      state.messagesRef = firebaseApp.database().ref ( 'message' )
-      state.messagesRef.on  ( 'value', snapshot => {
-          state.messages = []
-          var snap = snapshot.val()
-          for ( var rec in snap ) {
-              var __user = state.usersList [ snap [ rec ].user ]
-              if ( __user )
-                  state.messages.push ({
-                                        data: snap [ rec ].data,
-                                        time: snap [ rec ].time,
-                                        edit: state.user == __user,
-                                        user: {
-                                            id: snap [ rec ].user,
-                                            name: __user.name,
-                                            photoURL: __user.photoURL
-                                        },
-                                        text: snap [ rec ].text
-                  })
-          }
-      })
+    setQuizName: ( state, name ) => state.quizName = name,
+    initQuizData: state => {
+      state.quizData = {
+          gameOverPictureURL: state.gameOverPictureURL,
+          successPictureURL: state.successPictureURL,
+          failurePictureURL: state.failurePictureURL,
+          score: 0,
+          maxScore: 0,
+          lives: 10,
+          levels: []
+      }
     },
-    buildPerspective: ( state, perspectiveData ) => {
-        state.perspectiveImages = {
-	         pictures: perspectiveData,
-           default: {
-              center: "0BxaMB69y7fvSQmJOTU52QWhHZXM",
-              sides: [
-                  "0BxaMB69y7fvSZnFzeTBDSVRXYTg",
-                  "1eFNeW_F3LeSDV21aPbrhlZ17KokAsWQE",
-                  "1G4YGTxeOdQHUALmUj16rNHFEw3Ddh_QR",
-                  "1CbI646IxKLmIl11rf1kap3Tt9upudXyO"
-              ]
-           },
-           getItem: function () {
-    	        if ( this.pictures.length === 0 ) return this.default
-    	        var num = this.pictures.length === 1 ? 0 :
-        		       Math.round ( Math.random () * ( this.pictures.length - 1 ) )
-              return this.pictures.splice ( num, 1 )[0]
-           },
-           getPictures: function () {
-              var rec = this.getItem ()
-              var ind = Math.round ( Math.random () * ( rec.sides.length - 1 ) )
-              return {
-                  center: "https://drive.google.com/uc?export=download&id=" + rec.center,
-                  side: "https://drive.google.com/uc?export=download&id=" + rec.sides [ ind ]
-              }
-           }
-        }
+    getRawData: ( state, text ) => state.quizRawData = text,
+    pushLevelData: ( state, levelData ) => {
+         state.quizData.levels.push ( levelData )
     },
-    buildQuiz: ( state, quizData ) => {
-        state.quizData = quizData
-        state.quizData.score = 0
+    buildQuiz: state => {
         state.quizData.maxScore = 0
-        var res = 0
-        var k
-        for ( var i = 0; i < state.quizData.levels.length; i++ ) {
-            k = state.quizData.levels [i].rightChoicesNums ?
-                state.quizData.levels [i].rightChoicesNums.length : 1
-            state.quizData.maxScore += state.quizData.levels [i].balls * k
+        for ( var level of state.quizData.levels ) {
+            state.quizData.maxScore += level.balls * (
+              level.rightChoicesNums ?
+                  level.rightChoicesNums.length : 1
+            )
         }
+        state.quizReady = true
     },
     saveQuizResults: ( state, params ) => {
         state.quizData.score += params.score
         state.quizData.lives -= params.lives
-    },
-
-    setCurrentUser: ( state, newUser ) => {
-        state.user = {
-            name: newUser.displayName,
-            email: newUser.email,
-            provider: newUser.providerData[0].providerId,
-            photoURL: newUser.photoURL,
-            phoneNumber: newUser.phoneNumber,
-            lastSignInTime: newUser.phoneNumber
-        }
-    },
-    getCurrentUserId: state => {
-        var userExist = false
-        for ( var prop in state.usersList ) {
-            if ( state.usersList [ prop ].provider === state.user.provider &&
-                 state.usersList [ prop ].email == state.user.email &&
-                 state.usersList [ prop ].name === state.user.name ) {
-                            userExist = true
-                            break
-            }
-        }
-        if ( !userExist ) {
-            var ref = firebase.database().ref ( "users" )
-            ref.push ( state.user )
-        }
-    },
-    saveUsersList: ( state, ul ) => {
-        state.usersList = ul
-        firebaseApp.database().ref( "users" ).on( 'value', snapshot => {
-            state.usersList = snapshot.val()
-        })
-    },
-    userLoginError: state => {
-        state.user = null
-    },
-    userLogOut: state => {
-        state.user = null
-    },
-
-    changeCurrentSectionId: ( state, sectionId ) => {
-        if ( sectionId === 'about' || sectionId === 'details' )
-              state.sectionMenuSelected = sectionId
-        else {
-          state.currentSectionId = sectionId
-        }
-    },
-    getCurrentSectionInfo: state => {
-      if ( !state.mainData ) return
-      state.sectionInfo = state.mainData.filter ( item =>
-                          item.name === state.currentSectionId )[0]
-    },
-    getCurrentSectionPosts: state => {
-      if ( !state.postData || !state.currentSectionId ) return null
-      state.sectionPosts = state.postData [ state.currentSectionId ]
-    },
-    setCurrentPostId: ( state, postId ) => {
-      state.currentPostId = postId
-    },
-    setCurrentPostIdReadmeItems: ( state, items ) => {
-      state.currentPostReadmeItems = items
     },
     getMainData: ( state, mainData ) => {
         state.mainData = mainData
         state.mainDataIsReady = true
         state.mainMenuOptions = mainData.map ( item => item.name )
     },
-    getPostData: ( state, postData ) => {
-        state.postData = postData
-        state.postDataIsReady = true
+    setUser: ( state, userInfo ) => {
+        state.userInfo = userInfo
+        console.log ( state.userInfo )
+        let user = `${state.userInfo.fname} ${state.userInfo.name}`
+        if ( user ) {
+          console.log ( user )
+          let res = localStorage.getItem ( user )
+          state.userResults = res ? JSON.parse ( res ) : {}
+          console.log ( state.userResults )
+        }
+		},
+    setCookie: state => {
+        for ( var prop in state.userInfo ) {
+            document.cookie = `${prop}=${state.userInfo[prop]}`
+        }
+    },
+    saveAttemptResult: state => {
+        console.log ( state.userResults [ state.quizName ] )
+        !state.userResults [ state.quizName ] ?
+            state.userResults [ state.quizName ] = [] : null
+        state.userResults [ state.quizName ].push (
+              Math.round ( state.quizData.score * 100 / state.quizData.maxScore ) + "%"
+            )
+        localStorage.setItem (
+            `${state.userInfo.fname} ${state.userInfo.name}`,
+            JSON.stringify ( state.userResults )
+        )
     }
   },
   actions: {
-    getAllUsers: context => {
-        var usersRef = firebaseApp.database().ref ( "users" )
-        usersRef.once ( "value" )
-            .then ( function ( snapshot ) {
-                context.commit ( 'saveUsersList', snapshot.val() )
-            })
-    },
-    registerUser: ( context, newUser ) => {
-        context.commit ( 'setCurrentUser', newUser )
-        var testDB = new Promise ( function ( resolve, reject ) {
-            if ( context.state.usersList ) resolve ( context.state.usersList )
-        })
-        testDB.then ( function ( res ) {
-            context.commit ( 'getCurrentUserId' )
-        })
-    }
+      getQuizData ( context, files ) {
+          context.state.quizReady = false
+          context.commit ( 'initQuizData' )
+          files.forEach (
+              file => {
+                  fetch ( `../data/quiz/${file}.md` )
+                      .then (
+                          result => result.text()
+                              .then ( text => {
+                                  context.commit ( 'getRawData', text )
+                                  context.commit ( 'pushLevelData', context.getters.quizLevelData )
+                                  context.commit ( 'buildQuiz' )
+                              })
+                      )
+              }
+          )
+      }
   }
 })
-export default vueCourseStore
+
+export default quizStore

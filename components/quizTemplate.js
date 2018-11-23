@@ -23,6 +23,9 @@ const quizTemplate = {
         this.$parent.nextLevel ()
       }
     },
+    mounted: function () {
+
+    },
     template: `
       <v-container grid-list-sm mx-auto pb-5
                  class = "transparent"
@@ -73,18 +76,18 @@ const quizTemplate = {
                 </v-badge>
                 <v-badge color = "success">
                     <span slot = "badge">{{ $parent.score }}</span>
-                    <span> {{ $parent.maxScore }} </span>
+                    <span> {{ $parent.$parent.maxScore }} </span>
                 </v-badge>
               </v-flex>
               <v-spacer></v-spacer>
-              <v-tooltip top v-if = "!$parent.showResults">
+              <v-tooltip top v-if = "!$parent.showResults && $parent.quizData.type !== 'finish'">
                   <v-btn icon @click = "answerIsReady"
                               slot = "activator">
                       <v-icon>send</v-icon>
                   </v-btn>
                   <span>Готово</span>
               </v-tooltip>
-              <v-tooltip top>
+              <v-tooltip top v-if = "$parent.quizData.type !== 'finish'">
                   <v-btn icon @click = "nextLevel"
                               slot = "activator">
                       <v-icon>forward</v-icon>
@@ -134,4 +137,5 @@ const quizTemplate = {
       </v-container>
     `
 }
+
 export default quizTemplate

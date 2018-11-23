@@ -4,10 +4,10 @@ html {
 .application.theme--dark {
 	background-color:transparent!important;
 	font-family: 'Montserrat', 'Roboto', sans-serif;
-	background-image: url(../images/columns.gif)!important;
+	/* background-image: url(../images/columns.gif)!important;
 	background-repeat:no-repeat;
 	background-size:cover;
-	background-position: center center;
+	background-position: center center; */
 }
 .application--wrap {
     background-color:transparent!important;
@@ -111,7 +111,7 @@ ul {
 .card__actions .btn {
     margin: 4px 15px;
 }
-.theme--dark .picker {
+/*.theme--dark .picker {
     background-color: var(--magenta);
 }
 .picker .picker--date .card {
@@ -125,4 +125,4 @@ ul {
 }
 .picker--date__table {
     background-color: var(--pickerBackground)!important;
-}
+}*/

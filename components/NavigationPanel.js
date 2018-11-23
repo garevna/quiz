@@ -2,6 +2,11 @@
 
 const NavigationPanel = {
     props: [ "states" ],
+    data: function () {
+      return {
+        quiz: {}
+      }
+    },
     computed: {
         localDrawer: {
 		        get: function () {
@@ -19,12 +24,12 @@ const NavigationPanel = {
                             v-model = "localDrawer">
             <v-list class="pa-1">
                 <v-list-tile avatar>
-                    <v-list-tile-avatar>
-                        <img src="./images/js_cup.png" >
+                    <v-list-tile-avatar tile>
+                        <img src="./images/js-ico.png" width="40">
                     </v-list-tile-avatar>
                     <v-list-tile-content>
                         <v-list-tile-title>
-                            Content
+                            &nbsp;&nbsp;Quiz
                         </v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
@@ -48,13 +53,16 @@ const NavigationPanel = {
       </v-container>
     `,
     methods: {
-        clickHandler: function ( val ) {
+      clickHandler: async function ( val ) {
             this.$root.$emit ( 'closeNavigationPanel' )
-            this.$root.$store.commit( 'changeCurrentSectionId', val )
-            this.$root.$store.commit( 'getCurrentSectionInfo' )
-            this.$root.$store.commit( 'getCurrentSectionPosts' )
-            this.$root.$router.push ( { name: "mainSection", params: { id: val } } )
+            let files = this.$root.$store.state.mainData
+                .filter ( x => x.name === val )[0]
+                .levels
+            this.$root.$store.commit ( 'setQuizName', val )
+            await this.$root.$store.dispatch ( 'getQuizData', files )
+            this.$root.$emit ( 'start-quiz', val )
         }
-    }
+    },
+
 }
 export default NavigationPanel

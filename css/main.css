@@ -35,17 +35,8 @@ p {
     color: var(--textColor);
 }
 .columns {
-	background-image: url(../images/columns.gif)!important;
-	background-repeat:no-repeat;
-	background-size:cover;
 }
 
-.firebaseui-container {
-	margin-top: 100px!important;
-}
-.firebaseui-idp-list {
-	background-color: transparent!important;
-}
 .bottom-of-the-window {
   position: fixed;
   bottom:0;
@@ -59,15 +50,8 @@ p {
 .middle-of-the-window {
 	margin-top: 56px;
 	padding-bottom: 110px;
-	background-image: url(../images/columns.gif)!important;
-	background-size: cover;
-	background-attachment: fixed;
 	height: 90%;
 	overflow-y: auto;
-}
-
-.router-view {
-
 }
 
 footer {
@@ -147,15 +131,6 @@ input[type="checkbox"] {
 }
 .subheader {
   font-family: 'Jura', 'Didact Gothic', 'Mina', 'Comfortaa', 'sans-serif';
-}
-
-.demo-button {
-    display:block;
-    width:50px;
-    height:50px;
-    background-image: url(../images/google_slides.png);
-    background-size:contain;
-    background-repeat:no-repeat;
 }
 
 @media screen and (max-width: 480px) , screen and (max-height: 480px) {

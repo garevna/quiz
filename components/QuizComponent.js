@@ -1,21 +1,17 @@
 'use strict'
 
-import { TweenMax, Power2, TimelineLite } from "gsap"
+// import { TweenMax, Power2, TimelineLite } from "gsap"
 import styles from 'CSS/quiz.css'
 
-import PerspectiveDynamicFone from 'JS/PerspectiveDynamicFone'
+// import PerspectiveDynamicFone from 'JS/PerspectiveDynamicFone'
 import QuizLevel from 'JS/QuizLevel'
 import quizFinish from 'JS/quizFinish'
 
 const QuizComponent = {
-    props: [ "perspectiveReady", "quizReady" ],
+    props: [ ],
     data: function () {
         return {
             level: 1,
-            score: this.$root.$store.state.quizData.score,
-            lives: this.$root.$store.state.quizData.lives,
-            startQuiz: false,
-            quizData: this.$root.$store.state.quizData,
             showQuize: true,
             showResults: false,
             status: 'work',
@@ -23,81 +19,76 @@ const QuizComponent = {
         }
     },
     computed: {
-        currentQuiz: function () {
+        score () {
+          this.$root.$store.state.quizData.score
+        },
+        lives () {
+          return this.$root.$store.state.quizData.lives
+        },
+        quizData () {
+          return this.$root.$store.state.quizData
+        },
+        startQuiz () {
+          return this.$root.startQuiz
+        },
+        quizReady () {
+          return this.$root.$store.state.quizReady
+        },
+        currentQuiz () {
             return this.quizData.levels [ this.level - 1 ]
         },
-        maxScore: function () {
+        maxScore () {
             return this.$root.$store.state.quizData.maxScore
         },
-        results: {
-          get: function () {
+        results () {
             return {
                 maxScore: this.$root.$store.state.quizData.maxScore,
                 score: this.$root.$store.state.quizData.score,
                 lives: this.$root.$store.state.quizData.lives
             }
-          },
-          set: function ( params ) {
-            //console.log ( params )
-            //this.$root.$store.commit ( 'saveQuizResults', params )
-          }
         },
     },
     template: `
       <div v-if = "showQuize">
-        <perspective-dynamic-fone :level = "level">
-        </perspective-dynamic-fone>
         <quiz-level :quizData = "currentQuiz"
                       :level = "level"
                       v-if = "startQuiz">
         </quiz-level>
-        <quiz-finish v-if = 'finish'
-                     :status = "status"
-                     :results = "results">
-        </quiz-finish>
     </div>
     `,
     components: {
-        'perspective-dynamic-fone': PerspectiveDynamicFone,
-        'quiz-level': QuizLevel,
-        'quiz-finish': quizFinish
+        'quiz-level': QuizLevel
+    },
+    methods: {
+        finishCallback () {
+            this.level = this.quizData.levels.length + 1
+            this.$root.$store.commit ( `saveAttemptResult` )
+            this.$root.$store.commit ( 'pushLevelData', {
+                results: {
+                    userPhoto: this.$root.$store.state.userInfo.photoURL ||
+                            `https://www.shareicon.net/data/2015/12/14/2078${10 + Math.round ( Math.random () * 10 )}_face_300x300.png`,
+                    userName: `${this.$root.$store.state.userInfo.fname} ${this.$root.$store.state.userInfo.name}`,
+                    score: this.results.score,
+                    lives: Math.max ( this.lives, 0 ),
+                    maxScore: this.results.maxScore
+                },
+                picture: this.lives <= 0 ? this.$root.$store.state.failurePictureURL :
+                         this.results.score === this.results.maxScore ?
+                                           this.$root.$store.state.successPictureURL :
+                                           this.$root.$store.state.gameOverPictureURL,
+                type: "finish"
+            } )
+        }
     },
     mounted: function () {
-        this.lives = this.$root.$store.state.quizData.lives
-        this.score = this.$root.$store.state.quizData.score
-        //this.maxScore = this.$root.$store.state.quizData.maxScore
-
-        this.$on ( 'start-quiz', function () {
-            this.startQuiz = true
-        })
-        this.$on ( 'looser', function () {
-            this.status = 'looser'
-            this.finish = true
-        })
         this.$on ( 'save-quiz-level-results', function ( results ) {
-          this.$root.$store.commit ( 'saveQuizResults', results )
+            this.$root.$store.commit ( 'saveQuizResults', results )
         })
         this.$on ( 'next-level', function () {
-          this.lives = this.$root.$store.state.quizData.lives
-          this.score = this.$root.$store.state.quizData.score
-          if ( this.lives <= 0 ) {
-            this.status = 'looser'
-            this.finish = true
-          }
-          else {
-            this.startQuiz = false
             this.level += 1
-            this.results = {
-                maxScore: this.$root.$store.state.quizData.maxScore,
-                score: this.$root.$store.state.quizData.score,
-                lives: this.$root.$store.state.quizData.lives
-            }
-            if ( this.level > this.quizData.levels.length ) {
-                this.status = this.results.score === this.results.maxScore ? 'winner' : 'finish'
-                this.finish = true
-                this.startQuiz = false
-            }
-          }
+            this.showResults = false
+            this.lives <= 0 || this.level > this.quizData.levels.length ?
+                    this.finishCallback() : null
         })
         this.$root.$on ( 'exit-quiz', function () {
             this.showQuize = false
