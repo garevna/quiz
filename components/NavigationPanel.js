@@ -34,6 +34,7 @@ const NavigationPanel = {
                     </v-list-tile-content>
                 </v-list-tile>
             </v-list>
+
             <v-list class="pt-0" dense>
                 <v-divider></v-divider>
                 <v-list-tile v-for = "item in states"
@@ -63,6 +64,8 @@ const NavigationPanel = {
             this.$root.$emit ( 'start-quiz', val )
         }
     },
+    components: {
 
+    }
 }
 export default NavigationPanel

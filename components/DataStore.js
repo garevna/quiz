@@ -130,13 +130,10 @@ const quizStore = new Vuex.Store ({
     },
     setUser: ( state, userInfo ) => {
         state.userInfo = userInfo
-        console.log ( state.userInfo )
         let user = `${state.userInfo.fname} ${state.userInfo.name}`
         if ( user ) {
-          console.log ( user )
           let res = localStorage.getItem ( user )
           state.userResults = res ? JSON.parse ( res ) : {}
-          console.log ( state.userResults )
         }
 		},
     setCookie: state => {
@@ -145,7 +142,6 @@ const quizStore = new Vuex.Store ({
         }
     },
     saveAttemptResult: state => {
-        console.log ( state.userResults [ state.quizName ] )
         !state.userResults [ state.quizName ] ?
             state.userResults [ state.quizName ] = [] : null
         state.userResults [ state.quizName ].push (

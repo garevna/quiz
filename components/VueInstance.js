@@ -14,6 +14,7 @@ import NavigationPanel from 'JS/NavigationPanel'
 import appFooter from 'JS/appFooter'
 import QuizComponent from 'JS/QuizComponent'
 import LoginComponent from 'JS/loginComponent'
+import UserInfo from 'JS/userInfo'
 
 import store from 'JS/DataStore'
 
@@ -36,7 +37,8 @@ new Vue ( {
 	        maxScore:0
 	    },
 			login: false,
-			dialog: false
+			dialog: false,
+			showInfo: false
 		}
 	},
 	computed: {
@@ -66,12 +68,15 @@ new Vue ( {
 		window.addEventListener ( 'resize', this.windowResized )
 		this.$on ( 'start-quiz', function ( val ) {
 				!this.login ? ( this.dialog = true ) : ( this.startQuiz = true )
-		} )
+		})
 		this.$on ( 'exit-quiz', function () {
 				this.startQuiz = false
-		} )
+		})
 		this.$on ( 'closeNavigationPanel', function () {
 				this.drawer = false
+		})
+		this.$on ( 'close-info', function () {
+			this.showInfo = false
 		})
 		this.$on ( 'navigation-drawer-state', function ( val ) {
 				this.drawer = val
@@ -108,7 +113,8 @@ new Vue ( {
 		'nav-panel': NavigationPanel,
 		'app-footer': appFooter,
 		'quiz-component': QuizComponent,
-		'login-component': LoginComponent
+		'login-component': LoginComponent,
+		'user-info': UserInfo
 	},
 	template: `
 	<v-app dark class = "main-content">
@@ -119,9 +125,7 @@ new Vue ( {
 
 						<v-toolbar-title v-if = "login">
 							<v-avatar v-if = "user.photoURL">
-								<img
-									:src="user.photoURL"
-								>
+								<img :src="user.photoURL">
 							</v-avatar>
 							{{user.fname + " " + user.name}}
 						</v-toolbar-title>
@@ -132,7 +136,14 @@ new Vue ( {
 								</v-btn>
 								<v-list>
 										<v-list-tile @click = "dialog=true">
-												<v-list-tile-title>Sign in</v-list-tile-title>
+												<v-list-tile-title>
+														Sign in
+												</v-list-tile-title>
+										</v-list-tile>
+										<v-list-tile @click = "showInfo=true">
+												<v-list-tile-title>
+														Достижения
+												</v-list-tile-title>
 										</v-list-tile>
 								</v-list>
 						</v-menu>
@@ -156,6 +167,7 @@ new Vue ( {
 				<quiz-component v-if = "quizReady && startQuiz">
 				</quiz-component>
 		<nav-panel :states = "mainMenuItems"></nav-panel>
+		<user-info :showInfo="showInfo"></user-info>
 	</v-app>
 	`
 }).$mount ( '#JS-quiz' )
