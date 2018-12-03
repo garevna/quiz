@@ -1,6 +1,11 @@
 'use strict'
 
 import quizTemplate from 'JS/quizTemplate'
+import JSCodeElement from 'JS/JS-code'
+import htmlCodeElement from 'JS/html-code'
+
+import jsClasses from 'CSS/js-classes.css'
+import htmlClasses from 'CSS/html-classes.css'
 
 const QuizLevel = {
   props: [ "level" ],
@@ -16,7 +21,9 @@ const QuizLevel = {
     }
   },
   components: {
-      'quiz-template': quizTemplate
+      'quiz-template': quizTemplate,
+      'js-code': JSCodeElement,
+      'html-code': htmlCodeElement
   },
   computed: {
     quizData () {
@@ -70,6 +77,9 @@ const QuizLevel = {
       }
   },
   methods: {
+      coloring ( text, lang ) {
+          return `<code data-language="${lang}">${text}</code>`
+      },
       minify ( str ) {
           return str.split ( ' ' ).join('')
                  .split ( String.fromCharCode(10) ).join('')
@@ -84,10 +94,10 @@ const QuizLevel = {
       },
       choice () {
           this.levelResults = { right: 0, wrong: 0 }
-          for ( var i = 0; i < this.selected.length; i++ ) {
-            if ( this.quizData.rightChoicesNums.indexOf ( this.selected [i]) < 0 )
-                  this.levelResults.wrong  += 1
-            else  this.levelResults.right  += 1
+          for ( var sel of this.selected ) {
+              this.quizData.rightChoicesNums.indexOf ( sel ) < 0 ?
+                    this.levelResults.wrong  += 1 :
+                    this.levelResults.right  += 1
           }
       },
       input () {
@@ -122,14 +132,14 @@ const QuizLevel = {
   },
   template: `
     <quiz-template :params = "params">
-        <v-card-text slot = "question" v-if = "quizData.type !== 'finish'">
+        <div slot = "question" v-if = "quizData.type !== 'finish'">
           <v-chip color="warning" text-color="white">
             <v-avatar class="accent">{{level}}</v-avatar>
             {{ quizData.question }}
           </v-chip>
-        </v-card-text>
+        </div>
 
-        <v-card-text slot = "choice">
+        <v-card-text slot = "choice" class = "codeSection">
             <v-checkbox
                  v-for = "( ch, ind ) in quizData.choiceVariants"
                         :key = "ind"
@@ -145,7 +155,7 @@ const QuizLevel = {
                       :height = "${window.innerHeight*0.7}">
         </v-card-media>
 
-        <v-card-text slot = "text"
+        <v-card-text slot = "text" class = "codeSection"
                      v-if = "quizData.type === 'input'">
             <v-text-field :suffix = "quizData.inputLegend ?
                                      quizData.inputLegend.after : ''"
@@ -157,18 +167,22 @@ const QuizLevel = {
             </v-text-field>
         </v-card-text>
 
-        <v-card-text slot = "html" v-if = "quizData.html">
-          <pre> {{quizData.html}} </pre>
+        <v-card-text slot = "html" class = "codeSection"
+                     v-if = "quizData.html">
+            <html-code :text = "quizData.html">
+            </html-code>
         </v-card-text>
 
-        <v-card-text slot = "js" v-if = "quizData.js">
-           <pre> {{quizData.js}} </pre>
-        </v-card-text>
+        <v-card slot = "js" class = "codeSection"
+                v-if = "quizData.js">
+              <js-code :text = "quizData.js">
+              </js-code>
+        </v-card>
 
         <v-card-text slot = "findError"
                      v-if = "quizData.type === 'findError'">
               <v-text-field name = "wrongContent"
-                            class = "success"
+                            class = "codeSection"
                             hide-details solo
                             row-height = "18"
                             multi-line

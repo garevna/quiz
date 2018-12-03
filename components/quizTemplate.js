@@ -37,7 +37,7 @@ const quizTemplate = {
             <slot name = "question"></slot>
           </v-card>
         </v-flex>
-        <v-card dark color = "success warning--text"
+        <v-card dark color = "codeSection warning--text"
                 height = "75%" style = "overflow:auto">
           <v-tabs v-model = "activeTab"
                   color = "accent" dark
@@ -56,7 +56,7 @@ const quizTemplate = {
 
             <v-tab-item v-for="( item, index ) in params"
                         :key="index">
-              <v-card flat color = "success">
+              <v-card flat>
                   <slot :name = "item.slotName"></slot>
               </v-card>
             </v-tab-item>

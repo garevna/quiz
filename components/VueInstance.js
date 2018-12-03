@@ -24,7 +24,7 @@ import forVuetify from 'CSS/forVuetify.css'
 
 new Vue ( {
 	store,
-	data: function () {
+	data () {
 		return {
 			mainDataSource: "data/mainData.json",
 			drawer: null,
@@ -42,20 +42,24 @@ new Vue ( {
 		}
 	},
 	computed: {
-		user: function () { return this.$store.state.userInfo },
-		mainMenuReady: function () { return this.$store.getters.mainMenuReady },
-		mainMenuItems: function () { return this.$store.getters.mainMenuItems },
-		quizReady: function () { return this.$store.state.quizReady }
+		user () { return this.$store.state.userInfo },
+		mainMenuReady () { return this.$store.getters.mainMenuReady },
+		mainMenuItems () { return this.$store.getters.mainMenuItems },
+		quizReady () { return this.$store.state.quizReady }
 	},
-	created: function () {
+	created () {
 		fetch ( this.mainDataSource )
 				.then ( response => response.json()
-					.then ( resp =>
-						this.$store.commit ( 'getMainData', resp ) )
+					.then ( resp => {
+							this.$store.commit ( 'getMainData', resp )
+							let __hash = decodeURI ( location.hash ).slice(1).trim()
+							__hash ? this.getQuizData ( __hash ) : null
+							location.hash = ""
+					})
 				)
 				.catch ( err => console.log ( 'ОШИБКА ', err ) )
 	},
-	mounted: function () {
+	mounted () {
 		this.getCookies ()
 		this.dialog = false
 		this.$on('close-dialog', function (){
@@ -88,12 +92,25 @@ new Vue ( {
 				error: '#d00',
 				info: '#09a',
 				success: '#266150',
-				warning: '#fa0'
+				warning: '#fa0',
+				codeSection: "#003040"
 		}
 		this.windowResized ()
 	},
 	methods: {
-		getCookies: function () {
+		getQuizData: async function ( theme ) {
+				if ( theme ) {
+						let ___data = this.$store.state.mainData
+												.filter ( x => x.name === theme )[0]
+						this.$store.commit ( 'setQuizName', theme )
+						await this.$store.dispatch ( 'getQuizData', {
+								folder: ___data.folder,
+								files: ___data.levels
+						})
+						this.$emit ( 'start-quiz', theme )
+				}
+		},
+		getCookies () {
         let res = document.cookie.split ( "; " ).map ( x =>  {
                 var tmp = x.split ( "=" )
                 var elem = {}
@@ -156,7 +173,7 @@ new Vue ( {
 					<v-spacer></v-spacer>
 					<v-tooltip bottom nudge-top="-30">
 						<span slot="activator">
-							&copy;&nbsp;Irina Fylyppova 2017
+							&copy;&nbsp;Irina Fylyppova 2018
 						</span>
 						<span>
 							<img src="./images/my-photo.png" width="80">

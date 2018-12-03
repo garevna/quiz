@@ -1,0 +1,67 @@
+textarea {
+  background-color: #003040!important;
+  letter-spacing: 0.7px!important;
+  padding: 20px!important;
+  color: #aab!important;
+}
+code {
+    background-color: #003040!important;
+    font-size: 110%!important;
+    color: #abb!important;
+    box-shadow: none!important;
+    font-weight: normal!important;
+    margin: 20px;
+}
+
+.var, .let, .const, .function, .new, .if, .for {
+  color: rgb(205, 9, 245);
+  font-style:italic;
+  font-weight:bold;
+}
+
+.true, .false {
+  color: rgb(2, 218, 192);
+}
+
+.undefined, .null, .NaN, .Infinity {
+  color: rgb(226, 92, 2);
+  font-weight:bold;
+  font-style:italic;
+}
+
+.Object, .Number, .Date,
+.String, .Boolean, .Math,
+.Error, .Event, .Buffer,
+.Array, .Blob, .JSON {
+  color: rgb(6, 139, 248);
+}
+
+.constructor, .class {
+  color: rgb(6, 200, 248);
+}
+
+.__proto__, .prototype, .this {
+  color: rgb(5, 221, 59);
+}
+
+.window, .document, .console {
+  color: rgb(4, 213, 228);
+}
+
+.location,
+.history,
+.localStorage,
+.cookie {
+  color: rgb(197, 250, 3);
+}
+
+.fetch, .XMLHttpRequest,
+.Response, .Request,
+.Promise, .Headers,
+.URL, .Reader, .File {
+    color: rgb(255, 166, 0);
+}
+
+.try, .then, .catch, .arrow {
+    color: rgb(252, 101, 232);
+}

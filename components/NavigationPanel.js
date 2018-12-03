@@ -56,11 +56,13 @@ const NavigationPanel = {
     methods: {
       clickHandler: async function ( val ) {
             this.$root.$emit ( 'closeNavigationPanel' )
-            let files = this.$root.$store.state.mainData
-                .filter ( x => x.name === val )[0]
-                .levels
+            let ___data = this.$root.$store.state.mainData
+                        .filter ( x => x.name === val )[0]
             this.$root.$store.commit ( 'setQuizName', val )
-            await this.$root.$store.dispatch ( 'getQuizData', files )
+            await this.$root.$store.dispatch ( 'getQuizData', {
+                folder: ___data.folder,
+                files: ___data.levels
+            })
             this.$root.$emit ( 'start-quiz', val )
         }
     },

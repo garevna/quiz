@@ -4,10 +4,6 @@ html {
 .application.theme--dark {
 	background-color:transparent!important;
 	font-family: 'Montserrat', 'Roboto', sans-serif;
-	/* background-image: url(../images/columns.gif)!important;
-	background-repeat:no-repeat;
-	background-size:cover;
-	background-position: center center; */
 }
 .application--wrap {
     background-color:transparent!important;
@@ -21,6 +17,17 @@ html {
     background-color: var(--expansionBodyBackground);
     color: var(--textColor);
 }
+
+.chip .chip__content {
+	white-space: inherit!important;
+	height: fit-content;
+	font-size: 18px;
+	text-shadow: 1px 1px 2px #00000090;
+	margin: 5px 10px;
+	padding: 5px 10px;
+	user-select: none;
+}
+.chip { border-radius: 0px!important; }
 
 .container {
       background-color: var(--expansionBodyBackground);
@@ -102,7 +109,7 @@ ul {
 }
 .card__text {
 	min-height: fit-content;
-	text-shadow: 0px 0px 3px #161e25;
+	text-shadow: 0px 0px 3px #00000090;
 	padding: 20px 30px;
 }
 .card__actions {

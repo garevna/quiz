@@ -154,12 +154,12 @@ const quizStore = new Vuex.Store ({
     }
   },
   actions: {
-      getQuizData ( context, files ) {
+      getQuizData ( context, params ) {
           context.state.quizReady = false
           context.commit ( 'initQuizData' )
-          files.forEach (
+          params.files.forEach (
               file => {
-                  fetch ( `data/quiz/${file}.md` )
+                  fetch ( `data/quiz/${params.folder}/${file}.md` )
                       .then (
                           result => result.text()
                               .then ( text => {
