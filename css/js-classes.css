@@ -11,6 +11,7 @@ code {
     box-shadow: none!important;
     font-weight: normal!important;
     margin: 20px;
+    outline: none;
 }
 
 .var, .let, .const, .function, .new, .if, .for {
@@ -64,4 +65,10 @@ code {
 
 .try, .then, .catch, .arrow {
     color: rgb(252, 101, 232);
+}
+
+.literal {
+  color: rgb(238, 252, 116);
+  font-style: italic;
+  font-weight:lighter;
 }

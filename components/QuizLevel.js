@@ -81,12 +81,14 @@ const QuizLevel = {
           return `<code data-language="${lang}">${text}</code>`
       },
       minify ( str ) {
-          return str.split ( ' ' ).join('')
-                 .split ( String.fromCharCode(10) ).join('')
-                 .split ( String.fromCharCode(9) ).join('')
-                 .split ( String.fromCharCode(13) ).join('')
+          return str.split (/[\s]/gmi).join("")
+                    .split(String.fromCharCode(13)).join("")
+                    .split(String.fromCharCode(10)).join("")
+                    .split('<').join("&lt;")
+                    .split('>').join("&gt;")
       },
       findError () {
+          this.$root.$emit ( "validate-answer" )
           var result = this.minify ( this.quizData.wrongContent )
           var etalon = this.minify ( this.quizData.rightContent )
           var tst = result === etalon
@@ -117,7 +119,6 @@ const QuizLevel = {
           this.score = this.$root.$store.state.quizData.score
           this.showResults = true
           this.snackbar = true
-          // if ( this.lives === 0 ) this.$parent.$emit ( 'looser' )
 
       },
       nextLevel () {
@@ -129,6 +130,14 @@ const QuizLevel = {
       exitQuiz () {
           this.$root.$emit ( 'exit-quiz' )
       }
+  },
+  mounted () {
+      this.$root.$on (
+        "test-results",
+        function ( testResult ) {
+          console.log ( testResult )
+        }
+      )
   },
   template: `
     <quiz-template :params = "params">
@@ -175,13 +184,17 @@ const QuizLevel = {
 
         <v-card slot = "js" class = "codeSection"
                 v-if = "quizData.js">
-              <js-code :text = "quizData.js">
+              <js-code :text = "quizData.js"
+                        contenteditable=false>
               </js-code>
         </v-card>
 
         <v-card-text slot = "findError"
                      v-if = "quizData.type === 'findError'">
-              <v-text-field name = "wrongContent"
+              <js-code v-bind:text.sync = "quizData.wrongContent"
+                       contenteditable = true>
+              </js-code>
+              <!--<v-text-field name = "wrongContent"
                             class = "codeSection"
                             hide-details solo
                             row-height = "18"
@@ -189,7 +202,7 @@ const QuizLevel = {
                             rows = 25
                             auto-grow
                             v-model = "quizData.wrongContent">
-              </v-text-field>
+              </v-text-field>-->
         </v-card-text>
 
         <v-card-text slot = "results"

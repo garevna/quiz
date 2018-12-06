@@ -168,6 +168,7 @@ const quizStore = new Vuex.Store ({
                                   context.commit ( 'buildQuiz' )
                               })
                       )
+                      .catch ( err => console.warn ( `There is no such file: data/quiz/${params.folder}/${file}.md` ) )
               }
           )
       }

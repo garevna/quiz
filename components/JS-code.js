@@ -1,7 +1,7 @@
 'use strict'
 
 const JSCodeElement = {
-  props: [ "text" ],
+  props: [ "text", "contenteditable" ],
 	data: function () {
 		return {
       classes: [
@@ -71,14 +71,34 @@ const JSCodeElement = {
           )
           newText = newText.join ("\n").split ( "=>" )
               .join ( `<span class="arrow">=></span>` )
+
+          let literals = newText.match ( /`[\s\S][^`]*`/gmi )
+          if ( literals )
+            for ( let lit of literals ) {
+              newText = newText.split ( lit )
+                .join ( `<span class="literal">${lit}</span>` )
+            }
           return newText
+      },
+      minify ( text ) {
+          return text
+            .split (/[\s]/gmi).join("")
+            .split(String.fromCharCode(13)).join("")
+            .split(String.fromCharCode(10)).join("")
+            .split('<').join("&lt;")
+            .split('>').join("&gt;")
       }
   },
   mounted () {
-
+      this.$root.$on ( "validate-answer", function () {
+          let tmp = this.$el.innerText.split ( /<[\s\S][^>]>/gmi ).join("")
+          this.$emit ( "update:text", tmp )
+      }.bind ( this ) )
   },
   template: `
-      <code v-html = "jsText"></code>
+      <code v-html = "jsText"
+            :contenteditable = "contenteditable">
+      </code>
   `
 }
 
