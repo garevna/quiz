@@ -61,13 +61,21 @@ const quizStore = new Vuex.Store ({
                 quizTypeFindError ( state.quizRawData )
 
         function quizTypeInput () {
-            quiz.rightInput = quiz.rightInput.split( /[\s]*____/ )[0]
-            quiz.inputLegendBefore = quiz.inputLegendBefore.split( /[\s]*____/ )[0]
-            quiz.inputLegendAfter = quiz.inputLegendAfter.split( /[\s]*____/ )[0]
+            quiz.rightInput = quiz.rightInput
+                  .split( /[\s]*____/ )[0]
+                  .split( String.fromCharCode(10) )
+                  .join(",")
+                  .split( "," )
+                  .filter ( x => x.length > 0 )
+            quiz.inputLegendBefore = quiz.inputLegendBefore
+                  .split( /[\s]*____/ )[0]
+            quiz.inputLegendAfter = quiz.inputLegendAfter
+                  .split( /[\s]*____/ )[0]
         }
         function quizTypeChoice () {
             quiz.choiceVariants = quiz.choiceVariants
-                .split( /[\s]*____/ )[0].split( String.fromCharCode( 10 ) )
+                .split( /[\s]*____/ )[0]
+                .split( String.fromCharCode( 10 ) )
                 .map ( x => x.trim()
                     .split( String.fromCharCode(10) ).join("")
                     .split( String.fromCharCode(13) ).join("")

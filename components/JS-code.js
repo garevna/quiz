@@ -41,6 +41,9 @@ const JSCodeElement = {
         "XMLHttpRequest",
         "File",
         "Promise",
+        "yield",
+        "async",
+        "await",
         "Reader",
         "Request",
         "Response",
@@ -78,6 +81,8 @@ const JSCodeElement = {
               newText = newText.split ( lit )
                 .join ( `<span class="literal">${lit}</span>` )
             }
+          newText = newText.split ( "•••" )
+                .join ( `<span class="replaced">•••</span>` )
           return newText
       },
       minify ( text ) {

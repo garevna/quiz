@@ -14,8 +14,9 @@ code {
     outline: none;
 }
 
-.var, .let, .const, .function, .new, .if, .for {
-  color: rgb(205, 9, 245);
+.var, .let, .const, .function,
+.new, .if, .for, .yield, .async, .await {
+  color: var(--specWordsColor);
   font-style:italic;
   font-weight:bold;
 }
@@ -25,15 +26,14 @@ code {
 }
 
 .undefined, .null, .NaN, .Infinity {
-  color: rgb(226, 92, 2);
+  color: var(--userNamesColor);
   font-weight:bold;
   font-style:italic;
 }
 
 .Object, .Number, .Date,
 .String, .Boolean, .Math,
-.Error, .Event, .Buffer,
-.Array, .Blob, .JSON {
+.Error, .Event, .JSON {
   color: rgb(6, 139, 248);
 }
 
@@ -42,24 +42,20 @@ code {
 }
 
 .__proto__, .prototype, .this {
-  color: rgb(5, 221, 59);
+  color: var(--greenText);
 }
 
-.window, .document, .console {
+.window, .document, .console,
+.location, .history,
+.localStorage, .cookie {
   color: rgb(4, 213, 228);
-}
-
-.location,
-.history,
-.localStorage,
-.cookie {
-  color: rgb(197, 250, 3);
 }
 
 .fetch, .XMLHttpRequest,
 .Response, .Request,
 .Promise, .Headers,
-.URL, .Reader, .File {
+.URL, .Reader, .File,
+.Buffer, .Array, .Blob {
     color: rgb(255, 166, 0);
 }
 
@@ -68,7 +64,11 @@ code {
 }
 
 .literal {
-  color: rgb(238, 252, 116);
+  color: rgb(176, 182, 125);
   font-style: italic;
   font-weight:lighter;
+}
+
+.replaced {
+  color: red;
 }
