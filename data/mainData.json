@@ -15,6 +15,16 @@
     "levels": [ "01", "02", "03", "04", "05", "07", "08", "09", "10", "11", "12", "13", "14", "15" ]
   },
   {
+    "name": "Замыкание",
+    "folder": "closures",
+    "levels": [ "01", "02", "03", "04", "05", "07" ]
+  },
+  {
+    "name": "Рекурсия",
+    "folder": "recursion",
+    "levels": [ "01", "02", "03", "04", "05" ]
+  },
+  {
     "name": "Promise",
     "folder": "promise",
     "levels": [ "01", "02", "03", "04" ]
@@ -28,6 +38,11 @@
     "name": "localStorage",
     "folder": "localStorage",
     "levels": [ "01", "02", "03", "04", "05", "07" ]
+  },
+  {
+    "name": "Arrow functions",
+    "folder": "arrowFunctions",
+    "levels": [ "01", "02", "03", "04", "05", "07", "08", "09", "10", "11", "12" ]
   },
   {
     "name": "async function",

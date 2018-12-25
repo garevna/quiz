@@ -3,7 +3,7 @@ html {
 }
 .application.theme--dark {
 	background-color:transparent!important;
-	font-family: 'Montserrat', 'Roboto', sans-serif;
+	font-family: var(--firstFamily);
 }
 .application--wrap {
     background-color:transparent!important;
@@ -14,31 +14,44 @@ html {
       background-color:transparent!important;
 }
 .application .theme--dark.card, .theme--dark .card {
-    background-color: var(--expansionBodyBackground);
+    background-color: var(--darkPrimary);
     color: var(--textColor);
+}
+
+.theme--dark .btn, .theme--dark .icon,
+.theme--dark .tabs__bar .tabs__div,
+.badge {
+    text-shadow: 1px 1px 2px #00000090!important;
 }
 
 .chip .chip__content {
 	white-space: inherit!important;
 	height: fit-content;
-	font-size: 18px;
+	font-size: 16px;
 	text-shadow: 1px 1px 2px #00000090;
 	margin: 5px 10px;
 	padding: 5px 10px;
 	user-select: none;
+	border-radius: 0!important;
 }
-.chip { border-radius: 0px!important; }
+.chip__content {
+	background-color: transparent;
+}
+.chip {
+	background-color: var(--darkPrimary)!important;
+}
 
 .container {
-      background-color: var(--expansionBodyBackground);
+      background-color: transparent!important;
 			max-width:1000px;
 }
+
 .expansion-panel {
 		background-color: transparent!important;
 		max-width:900px;
 }
 .expansion-panel__body {
-    background-color: var(--expansionBodyBackground);
+    background-color: var(--darkPrimary);
 }
 ul.expansion-panel {
 		background-color: transparent!important;
@@ -52,12 +65,11 @@ ul.expansion-panel {
 		color: var(--textColor);
 }
 .expansion-panel__header {
-    font-family: 'Didact Gothic', 'Roboto', sans-serif!important;
+		font-family: var(--secondFamily);
 		font-size:18px;
-		color: var(--expansionHeaderColor);
+		color: var(--darkPrimary);
 		font-weight:bold;
 }
-
 .tooltip__content {
 	background-color: transparent;
 	border: 0;
@@ -71,9 +83,7 @@ ul.expansion-panel {
 .input-group--text-field label  {
 	padding: 0 20px;
 }
-aside.navigation-drawer {
-	height:85%;
-}
+
 .transparent {
 	background-color: transparent;
 	border:0;
@@ -88,48 +98,35 @@ aside.navigation-drawer {
   padding: 0;
   background: var(--orange)!important;
 }
-ul {
-  background-color: var(--orange)!important;
-}
+
 .list__tile {
-    background-color: #9b03a5;
+    background-color: var(--primary);
     color: #fff!important;
 }
 .list__tile--link {
-    background-color: #337256;
-    color: #fff;
+    background-color: var(--primary);
+    /* color: #fff; */
+		color: #var(--darkPrimary);
 }
 .list__tile--active {
-    color: #ff8!important;
+    color: #557!important;
 }
 .navigation-drawer {
 	height: 100%;
-	background-color: #9b03a5;
-	color: #fa0;
+	background-color: var(--primary);
 }
+aside.navigation-drawer {
+	height:85%;
+}
+
 .card__text {
 	min-height: fit-content;
 	text-shadow: 0px 0px 3px #00000090;
 	padding: 20px 30px;
 }
-.card__actions {
+/* .card__actions {
 	background-color: var(--magenta);
 }
 .card__actions .btn {
     margin: 4px 15px;
-}
-/*.theme--dark .picker {
-    background-color: var(--magenta);
-}
-.picker .picker--date .card {
-    background-color: transparent!important;
-}
-.picker__body {
-    background-color: var(--pickerBackground)!important;
-}
-.picker--date__header {
-    background-color: var(--magenta)!important;
-}
-.picker--date__table {
-    background-color: var(--pickerBackground)!important;
-}*/
+} */

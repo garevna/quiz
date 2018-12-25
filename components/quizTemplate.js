@@ -33,11 +33,11 @@ const quizTemplate = {
                           top:0;left:0;
                           bottom:30px;right:0">
         <v-flex d-flex xs12 mx-auto>
-          <v-card dark color = "warning white--text">
+          <v-card dark color = "primary white--text">
             <slot name = "question"></slot>
           </v-card>
         </v-flex>
-        <v-card dark color = "codeSection warning--text"
+        <v-card dark color = "warning--text"
                 height = "75%" style = "overflow:auto">
           <v-tabs v-model = "activeTab"
                   color = "accent" dark

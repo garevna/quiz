@@ -106,6 +106,7 @@ const QuizLevel = {
           let x = this.quizData.rightInput.some ( rightAnswer =>
               this.minify ( this.answer ) === this.minify ( rightAnswer )
           )
+          console.log ( this.quizData.rightInput, '\n', this.answer )
           this.levelResults = { right: 0 + x, wrong: 0 + !x }
       },
       finish () {
@@ -144,13 +145,13 @@ const QuizLevel = {
   template: `
     <quiz-template :params = "params">
         <div slot = "question" v-if = "quizData.type !== 'finish'">
-          <v-chip color="warning" text-color="white">
+          <v-chip text-color="white">
             <v-avatar class="accent">{{level}}</v-avatar>
             {{ quizData.question }}
           </v-chip>
         </div>
 
-        <v-card-text slot = "choice" class = "codeSection">
+        <v-card-text slot = "choice" class = "transparent">
             <v-checkbox
                  v-for = "( ch, ind ) in quizData.choiceVariants"
                         :key = "ind"
@@ -166,7 +167,7 @@ const QuizLevel = {
                       :height = "${window.innerHeight*0.7}">
         </v-card-media>
 
-        <v-card-text slot = "text" class = "codeSection"
+        <v-card-text slot = "text" class = "transparent"
                      v-if = "quizData.type === 'input'">
             <v-text-field :suffix = "quizData.inputLegend ?
                                      quizData.inputLegend.after : ''"
@@ -178,13 +179,13 @@ const QuizLevel = {
             </v-text-field>
         </v-card-text>
 
-        <v-card-text slot = "html" class = "codeSection"
+        <v-card-text slot = "html" class = "transparent"
                      v-if = "quizData.html">
             <html-code :text = "quizData.html">
             </html-code>
         </v-card-text>
 
-        <v-card slot = "js" class = "codeSection"
+        <v-card slot = "js" class = "transparent"
                 v-if = "quizData.js">
               <js-code :text = "quizData.js"
                         contenteditable=false>

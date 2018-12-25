@@ -1,11 +1,11 @@
 textarea {
-  background-color: #003040!important;
+  background-color: var(--darkPrimary)!important;
   letter-spacing: 0.7px!important;
   padding: 20px!important;
   color: #aab!important;
 }
 code {
-    background-color: #003040!important;
+    background-color: var(--darkPrimary)!important;
     font-size: 110%!important;
     color: #abb!important;
     box-shadow: none!important;

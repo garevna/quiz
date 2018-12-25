@@ -19,10 +19,10 @@ const NavigationPanel = {
     },
     template: `
       <v-container class = "transparent">
-        <v-navigation-drawer class = "secondary"
+        <v-navigation-drawer class = "primary"
                             app temporary clipped
                             v-model = "localDrawer">
-            <v-list class="pa-1">
+            <v-list class="pa-0">
                 <v-list-tile avatar>
                     <v-list-tile-avatar tile>
                         <img src="./images/js-ico.png" width="40">
@@ -58,6 +58,7 @@ const NavigationPanel = {
             this.$root.$emit ( 'closeNavigationPanel' )
             let ___data = this.$root.$store.state.mainData
                         .filter ( x => x.name === val )[0]
+            location.hash = ___data.folder
             this.$root.$store.commit ( 'setQuizName', val )
             await this.$root.$store.dispatch ( 'getQuizData', {
                 folder: ___data.folder,

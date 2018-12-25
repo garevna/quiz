@@ -54,7 +54,6 @@ new Vue ( {
 							this.$store.commit ( 'getMainData', resp )
 							let __hash = decodeURI ( location.hash ).slice(1).trim()
 							__hash ? this.getQuizData ( __hash ) : null
-							location.hash = ""
 					})
 				)
 				.catch ( err => console.log ( 'ОШИБКА ', err ) )
@@ -74,6 +73,7 @@ new Vue ( {
 				!this.login ? ( this.dialog = true ) : ( this.startQuiz = true )
 		})
 		this.$on ( 'exit-quiz', function () {
+			  location.hash = ""
 				this.startQuiz = false
 		})
 		this.$on ( 'closeNavigationPanel', function () {
@@ -88,7 +88,7 @@ new Vue ( {
 		this.$vuetify.theme = {
 				primary: '#36465d',
 				secondary: '#4a8272',
-				accent: '#9b03a5',
+				accent: '#75859b',
 				error: '#d00',
 				info: '#09a',
 				success: '#266150',
@@ -101,7 +101,7 @@ new Vue ( {
 		getQuizData: async function ( theme ) {
 				if ( theme ) {
 						let ___data = this.$store.state.mainData
-												.filter ( x => x.name === theme )[0]
+												.filter ( x => x.folder === theme )[0]
 						this.$store.commit ( 'setQuizName', theme )
 						await this.$store.dispatch ( 'getQuizData', {
 								folder: ___data.folder,
@@ -135,7 +135,7 @@ new Vue ( {
 	},
 	template: `
 	<v-app dark class = "main-content">
-				<v-toolbar flat class = "primary" app v-if = "!startQuiz">
+				<v-toolbar class = "primary" app v-if = "!startQuiz">
 						<v-btn @click.stop = "drawer = !drawer" dark color = "primary" icon>
 								<v-icon>menu</v-icon>
 						</v-btn>
@@ -169,7 +169,7 @@ new Vue ( {
 				<login-component v-if="dialog"></login-component>
 
 				<v-footer class="glass" app>
-					<img src = "./images/a-level.png" width="100">
+					<img src = "./images/a-level.png" width="140">
 					<v-spacer></v-spacer>
 					<v-tooltip bottom nudge-top="-30">
 						<span slot="activator">

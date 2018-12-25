@@ -1,9 +1,10 @@
+@import url('https://fonts.googleapis.com/css?family=Didact+Gothic|Jura|Comfortaa|Montserrat|Roboto|Srisakdi|Dancing+Script');
+
 :root {
   --textColor: #8fb6bf;
   --primary: #36465d;
 	--background: #15253090;
-  --expansionBodyBackground: #003040;
-	--expansionHeaderColor: #023;
+  --darkPrimary: #0f2530;
 	--greenText: #409940;
 	--magenta: #9b03a5;
 	--orange: #fa0;
@@ -14,12 +15,9 @@
   --codeSnippetBack: #3b596d90;
   --codeSnippetColor: #a0b8e8;
 
-  --elementTop: 0;
-  /*--offsetTop: 0;*/
-  --winHeight: 0;
-  --winWidth: 0;
-  --textPaddingLeft: 0;
-  --pictureLeft: 0;
-  --pictureTop: 0;
-  --pictureSize:0;
+  --firstFamily: 'Montserrat', 'Roboto', sans-serif;
+  --secondFamily: 'Didact Gothic', 'Roboto', sans-serif;
+  --bodyFamily: 'Didact Gothic','Montserrat','Jura', sans-serif;
+  --footerFamily: 'Srisakdi', 'Roboto', monospace, sans-serif;
+  --subheaderFamily: 'Dancing Script', 'Jura', 'Didact Gothic', 'Comfortaa', 'sans-serif';
 }
