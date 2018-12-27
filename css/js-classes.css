@@ -59,8 +59,8 @@ code {
     color: rgb(255, 166, 0);
 }
 
-.try, .then, .catch, .arrow {
-    color: rgb(252, 101, 232);
+.try, .then, .catch, .arrow, .return {
+    color: rgb(255, 200, 150);
 }
 
 .literal {

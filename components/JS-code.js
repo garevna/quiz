@@ -13,6 +13,7 @@ const JSCodeElement = {
         "new ",
         "if ",
         "for ",
+        "return",
         "null",
         "NaN",
         "undefined",
