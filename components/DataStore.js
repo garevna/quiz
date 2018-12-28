@@ -64,8 +64,6 @@ const quizStore = new Vuex.Store ({
             quiz.rightInput = quiz.rightInput
                   .split( /[\s]*____/ )[0]
                   .split( String.fromCharCode(10) )
-                  // .join("")
-                  // .split( "," )
                   .filter ( x => x.length > 0 )
             quiz.inputLegendBefore = quiz.inputLegendBefore
                   .split( /[\s]*____/ )[0]
