@@ -38,11 +38,11 @@
   background-size: cover;
 }
 .finishSlide {
-  background-image: url(../images/game-over.gif);
+  background-image: url(./images/game-over.gif);
 }
 .successSlide {
-  background-image: url(../images/success.gif);
+  background-image: url(./images/success.gif);
 }
 .failureSlide {
-  background-image: url(../images/failure.gif);
+  background-image: url(./images/failure.gif);
 }
