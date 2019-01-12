@@ -162,10 +162,21 @@ const QuizLevel = {
             </v-checkbox>
         </v-card-text>
 
-        <v-card-media slot = "picture" v-if = "quizData.picture"
+        <!--<v-card-media slot = "picture" v-if = "quizData.picture"
                       :src = "quizData.picture"
-                      :height = "${window.innerHeight*0.7}">
-        </v-card-media>
+                      height = "500px"
+                      contain
+                      position: center center
+        >
+        </v-card-media>-->
+
+        <div slot = "picture" v-if = "quizData.picture"
+             class="card card--flat" style="height: auto;">
+           <img class="card__media"
+                style="height: auto; margin: 50px 20px;"
+                :src="quizData.picture"
+           />
+        </div>
 
         <v-card-text slot = "text" class = "transparent"
                      v-if = "quizData.type === 'input'">
@@ -208,9 +219,8 @@ const QuizLevel = {
               </v-text-field>-->
         </v-card-text>
 
-        <v-card-text slot = "results"
+        <v-card-text slot = "results" :class="quizData.fone"
                      v-if = "quizData.type === 'finish'">
-            <!--<v-card>-->
               <v-container fluid grid-list-lg>
                   <v-avatar size = "100px">
                     <img :src = "quizData.results.userPhoto">
@@ -237,7 +247,6 @@ const QuizLevel = {
                       </v-icon> Осталось жизней {{ quizData.results.lives }}
                   </h4>
               </v-container>
-            <!--</v-card>-->
         </v-card-text>
       </quiz-template>
   `

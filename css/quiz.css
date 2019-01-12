@@ -32,3 +32,17 @@
     font-weight: bold;
     text-shadow: 2px 2px 4px #000000aa;
 }
+
+.finishSlide, .successSlide, .failureSlide {
+  height:700px;
+  background-size: cover;
+}
+.finishSlide {
+  background-image: url(../images/game-over.gif);
+}
+.successSlide {
+  background-image: url(../images/success.gif);
+}
+.failureSlide {
+  background-image: url(../images/failure.gif);
+}

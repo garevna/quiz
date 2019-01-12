@@ -1,11 +1,8 @@
 'use strict'
 
-// import { TweenMax, Power2, TimelineLite } from "gsap"
 import styles from 'CSS/quiz.css'
 
-// import PerspectiveDynamicFone from 'JS/PerspectiveDynamicFone'
 import QuizLevel from 'JS/QuizLevel'
-import quizFinish from 'JS/quizFinish'
 
 const QuizComponent = {
     props: [ ],
@@ -72,11 +69,10 @@ const QuizComponent = {
                     lives: Math.max ( this.lives, 0 ),
                     maxScore: this.results.maxScore
                 },
-                picture: this.lives <= 0 ? this.$root.$store.state.failurePictureURL :
+                type: "finish",
+                fone: this.lives <= 0 ? "failureSlide" :
                          this.results.score === this.results.maxScore ?
-                                           this.$root.$store.state.successPictureURL :
-                                           this.$root.$store.state.gameOverPictureURL,
-                type: "finish"
+                                           "successSlide" : "finishSlide"
             } )
         }
     },
