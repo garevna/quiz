@@ -106,7 +106,6 @@ const QuizLevel = {
           let x = this.quizData.rightInput.some ( rightAnswer =>
               this.minify ( this.answer ) === this.minify ( rightAnswer )
           )
-          console.log ( this.quizData.rightInput, '\n', this.answer )
           this.levelResults = { right: 0 + x, wrong: 0 + !x }
       },
       finish () {
