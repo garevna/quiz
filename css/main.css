@@ -10,7 +10,8 @@ body {
   overflow:hidden;
   background-color: var(--primary)!important;
   font-family: var(--bodyFamily)!important;
-  font-size:15px;
+  /* font-size:15px; */
+  font-size:1rem!important;
 }
 
 p {
@@ -31,7 +32,7 @@ footer {
 	text-align:right;
 	background-color: #aab!important;
   font-family: var(--footerFamily);
-  font-size: 16px;
+  /* font-size: 16px; */
   text-shadow: 1px 1px 2px #00000090;
 }
 

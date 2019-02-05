@@ -21,6 +21,7 @@ const NavigationPanel = {
       <v-container class = "transparent">
         <v-navigation-drawer class = "primary"
                             app temporary clipped
+                            width="400"
                             v-model = "localDrawer">
             <v-list class="pa-0">
                 <v-list-tile avatar>
