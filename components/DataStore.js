@@ -163,20 +163,23 @@ const quizStore = new Vuex.Store ({
       getQuizData ( context, params ) {
           context.state.quizReady = false
           context.commit ( 'initQuizData' )
-          params.files.forEach (
-              file => {
-                  fetch ( `data/quiz/${params.folder}/${file}.md` )
-                      .then (
-                          result => result.text()
-                              .then ( text => {
-                                  context.commit ( 'getRawData', text )
-                                  context.commit ( 'pushLevelData', context.getters.quizLevelData )
-                                  context.commit ( 'buildQuiz' )
-                              })
-                      )
-                      .catch ( err => console.warn ( `There is no such file: data/quiz/${params.folder}/${file}.md` ) )
-              }
+          let promises = params.files.map (
+            file => fetch ( `data/quiz/${params.folder}/${file}.md` )
+                        .then (
+                            response => response.text()
+                                .then (
+                                    text => {
+                                        context.commit ( 'getRawData', text )
+                                        context.commit ( 'pushLevelData', context.getters.quizLevelData )
+                                        context.commit ( 'buildQuiz' )
+                                    }
+                                )
+                                .catch (
+                                  err => console.warn ( `There is no such file: data/quiz/${params.folder}/${file}.md` )
+                                )
+                        )
           )
+          Promise.all ( promises )
       }
   }
 })
