@@ -10,9 +10,10 @@ body {
   overflow:hidden;
   background-color: var(--primary)!important;
   font-family: var(--bodyFamily)!important;
-  /* font-size:15px; */
   font-size:1rem!important;
 }
+
+* { user-select: none; }
 
 p {
     text-indent: 25px;
@@ -32,7 +33,7 @@ footer {
 	text-align:right;
 	background-color: #aab!important;
   font-family: var(--footerFamily);
-  /* font-size: 16px; */
+  font-size: 18px;
   text-shadow: 1px 1px 2px #00000090;
 }
 
@@ -64,14 +65,14 @@ input[type="checkbox"] {
 	height: 7px;
 }
 ::-webkit-scrollbar-track {
-	background: #dde;
+	background: #079;
 	box-shadow: inset -0px -0px 2px rgba(0, 20, 30, 0.8)
 }
 ::-webkit-scrollbar-thumb {
 	width: 6px;
-	background-image: linear-gradient(to right, #6c7174, #203438 );
+	background-image: linear-gradient(to right, #fa0, #f70);
 	box-shadow: inset 1px 1px 1px #eef;
 }
 ::-webkit-scrollbar-corner {
-	background-color: #203438;
+	background-color: #fa0;
 }

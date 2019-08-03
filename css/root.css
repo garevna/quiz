@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css?family=Didact+Gothic|Jura|Comfortaa|Montserrat|Roboto|Srisakdi|Dancing+Script');
+@import url('https://fonts.googleapis.com/css?family=Luckiest+Guy|Poppins|Roboto|Montserrat|Dancing+Script|&display=swap');
 
 :root {
-  --textColor: #8fb6bf;
+  --textColor: #cde;
   --primary: #36465d;
+  --secondary: #007090;
 	--background: #15253090;
-  --darkPrimary: #0f2530;
+  --darkPrimary: #035;
 	--greenText: #409940;
 	--magenta: #9b03a5;
 	--orange: #fa0;
@@ -15,9 +16,9 @@
   --codeSnippetBack: #3b596d90;
   --codeSnippetColor: #a0b8e8;
 
-  --firstFamily: 'Montserrat', 'Roboto', sans-serif;
-  --secondFamily: 'Didact Gothic', 'Roboto', sans-serif;
-  --bodyFamily: 'Didact Gothic','Montserrat','Jura', sans-serif;
-  --footerFamily: 'Srisakdi', 'Roboto', monospace, sans-serif;
-  --subheaderFamily: 'Dancing Script', 'Jura', 'Didact Gothic', 'Comfortaa', 'sans-serif';
+  --firstFamily: 'Poppins', 'Roboto', sans-serif;
+  --secondFamily: 'Poppins', 'Roboto', sans-serif;
+  --bodyFamily: 'Montserrat', sans-serif;
+  --footerFamily: 'Dancing Script', 'Roboto', monospace, sans-serif;
+  --subheaderFamily: "Luckiest Guy", 'sans-serif';
 }

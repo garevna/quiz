@@ -15,6 +15,7 @@ import appFooter from 'JS/appFooter'
 import QuizComponent from 'JS/QuizComponent'
 import LoginComponent from 'JS/loginComponent'
 import UserInfo from 'JS/userInfo'
+import CubeComponent from 'JS/cube'
 
 import store from 'JS/DataStore'
 
@@ -87,11 +88,11 @@ new Vue ( {
 		})
 		this.$vuetify.theme = {
 				primary: '#36465d',
-				secondary: '#4a8272',
+				secondary: '#007090',
 				accent: '#75859b',
 				error: '#d00',
-				info: '#09a',
-				success: '#266150',
+				info: '#09b',
+				success: '#050',
 				warning: '#fa0',
 				codeSection: "#003040"
 		}
@@ -131,7 +132,8 @@ new Vue ( {
 		'app-footer': appFooter,
 		'quiz-component': QuizComponent,
 		'login-component': LoginComponent,
-		'user-info': UserInfo
+		'user-info': UserInfo,
+		'cube-element': CubeComponent
 	},
 	template: `
 	<v-app dark class = "main-content">
@@ -166,17 +168,28 @@ new Vue ( {
 						</v-menu>
 				</v-toolbar>
 
+				<cube-element
+						front="../images/front.gif"
+						back="../images/js-cube.png"
+						left="../images/left.gif"
+						right="../images/right.gif"
+						bottom="../images/bottom.gif"
+						top="../images/top.gif"
+						place="150, 150"
+						dimension="200,200">
+				</cube-element>
+
 				<login-component v-if="dialog"></login-component>
 
 				<v-footer class="glass" app>
-					<img src = "./images/a-level.png" width="140">
+					<img src = "./images/back.png" width="40">
 					<v-spacer></v-spacer>
 					<v-tooltip bottom nudge-top="-30">
 						<span slot="activator">
 							&copy;&nbsp;Irina Fylyppova 2018
 						</span>
 						<span>
-							<img src="./images/my-photo.png" width="80">
+							<img src="./images/my-photo.png" width="40">
 						</span>
 					</v-tooltip>
 				</v-footer>

@@ -1,0 +1,29 @@
+main {
+    position: absolute;
+    top: 10%; left: 10%; bottom: 10%; right: 10%;
+}
+
+section {
+    position:fixed;
+    width:40vw;
+    height:40vh;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-backface-visibility: visible;
+    -moz-backface-visibility: visible;
+    backface-visibility: visible;
+    box-sizing:border-box;
+}
+
+.face {
+    position:absolute;
+    border: none;
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-position:center center;
+    transform-origin:0 0;
+    -webkit-transform-origin: 0 0;
+    -moz-transform-origin:0 0;
+    mix-blend-mode: screen;
+}
