@@ -169,12 +169,12 @@ new Vue ( {
 				</v-toolbar>
 
 				<cube-element
-						front="../images/front.gif"
-						back="../images/js-cube.png"
-						left="../images/left.gif"
-						right="../images/right.gif"
-						bottom="../images/bottom.gif"
-						top="../images/top.gif"
+						front="./images/front.gif"
+						back="./images/js-cube.png"
+						left="./images/left.gif"
+						right="./images/right.gif"
+						bottom="./images/bottom.gif"
+						top="./images/top.gif"
 						place="150, 150"
 						dimension="200,200">
 				</cube-element>
