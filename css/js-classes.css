@@ -5,7 +5,8 @@ textarea {
   color: #aab!important;
 }
 code {
-    background-color: var(--darkPrimary)!important;
+    /* background-color: var(--darkPrimary)!important; */
+    background-color: transparent;
     font-size: 1.25rem!important;
     color: #abb!important;
     box-shadow: none!important;

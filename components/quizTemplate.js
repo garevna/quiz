@@ -1,11 +1,15 @@
 'use strict'
 
+// import CubeComponent from 'JS/cube'
+import Canvas from 'JS/CanvasComponent'
+
 const quizTemplate = {
     props: [ "params" ],
     data: function () {
       return {
         activeTab: null,
-        snackbar: false
+        snackbar: false,
+        showCube: true
       }
     },
     watch: {
@@ -21,26 +25,31 @@ const quizTemplate = {
       nextLevel: function () {
         this.snackbar = false
         this.$parent.nextLevel ()
+      },
+      onResize () {
+        this.showCube = window.innerWidth > 460 && window.innerHeight > 500
+        this.activeTab = "1"
       }
     },
+    components: {
+        // 'cube-element': CubeComponent,
+        'canvas-element': Canvas
+    },
     mounted: function () {
-
+      this.onResize()
     },
     template: `
       <v-container grid-list-sm mx-auto pb-5
-                 class = "transparent"
-                 style = "position:fixed;
-                          top:0;left:0;
-                          bottom:30px;right:0">
+                   class = "quiz-container transparent">
         <v-flex d-flex xs12 mx-auto>
-          <v-card dark color = "primary white--text">
+          <v-card flat class="transparent" color="white--text">
             <slot name = "question"></slot>
           </v-card>
         </v-flex>
-        <v-card dark color = "warning--text"
-                height = "75%" style = "overflow:auto">
+        <v-card color = "warning--text"
+                height = "90%" style = "overflow:auto">
+          <canvas-element text="JS"></canvas-element>
           <v-tabs v-model = "activeTab"
-                  color = "accent" dark
                   slider-color="warning">
 
             <v-tab  v-for="( item, index ) in params"
@@ -54,18 +63,38 @@ const quizTemplate = {
               </v-icon>
             </v-tab>
 
+            <!-- <v-tab ripple v-resize="onResize" v-show='showCube' key="10">
+                <span><i class="material-icons">insert_emoticon</i></span>
+            </v-tab> -->
+
             <v-tab-item v-for="( item, index ) in params"
                         :key="index">
-              <v-card flat>
-                  <slot :name = "item.slotName"></slot>
+              <v-card flat transparent>
+                  <slot :name="item.slotName"></slot>
               </v-card>
             </v-tab-item>
+
+            <!--<v-tab-item key="10">
+              <v-card class="ma-12 pa-12" height="70vh">
+                  <cube-element
+                      front="./images/front.gif"
+                      back="./images/js-cube.png"
+                      left="./images/left.gif"
+                      right="./images/right.gif"
+                      bottom="./images/bottom.gif"
+                      top="./images/top.gif"
+                      place="150, 150"
+                      dimension="200,200">
+                  </cube-element>
+              </v-card>
+            </v-tab-item> -->
+
           </v-tabs>
         </v-card>
 
         <v-layout row wrap justify-center>
           <v-flex d-flex xs12 mx-auto>
-            <v-card dark color = "accent">
+            <v-card>
               <v-layout flex wrap row justify-space-between>
               <v-flex xs6 sm4>
                 <v-badge color = "success">

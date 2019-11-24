@@ -161,14 +161,6 @@ const QuizLevel = {
             </v-checkbox>
         </v-card-text>
 
-        <!--<v-card-media slot = "picture" v-if = "quizData.picture"
-                      :src = "quizData.picture"
-                      height = "500px"
-                      contain
-                      position: center center
-        >
-        </v-card-media>-->
-
         <div slot = "picture" v-if = "quizData.picture"
              class="card card--flat" style="height: auto;">
            <img class="card__media"

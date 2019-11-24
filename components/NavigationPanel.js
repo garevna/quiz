@@ -19,14 +19,15 @@ const NavigationPanel = {
     },
     template: `
       <v-container class = "transparent">
-        <v-navigation-drawer class = "secondary"
-                            app temporary clipped
-                            width="400"
-                            v-model = "localDrawer">
-            <v-list class="pa-0">
+        <v-navigation-drawer absolute
+                class = "transparent"
+                app temporary clipped
+                width="${window.innerWidth/2}"
+                v-model = "localDrawer">
+            <v-list class="pa-0 transparent">
                 <v-list-tile avatar>
                     <v-list-tile-avatar tile>
-                        <img src="./images/js-ico.png" width="40">
+                        <img src="./images/js-icon.svg" width="40">
                     </v-list-tile-avatar>
                     <v-list-tile-content>
                         <v-list-tile-title>
@@ -36,9 +37,10 @@ const NavigationPanel = {
                 </v-list-tile>
             </v-list>
 
-            <v-list class="pt-0" dense>
+            <v-list class="pt-0 transparent" dense>
                 <v-divider></v-divider>
-                <v-list-tile v-for = "item in states"
+                <v-list-tile class="transparent"
+                             v-for = "item in states"
                              :key = "item"
                              @click = "clickHandler ( item )">
                     <v-list-tile-action>

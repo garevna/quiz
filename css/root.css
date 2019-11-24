@@ -3,17 +3,20 @@
 :root {
   --textColor: #cde;
   --primary: #36465d;
-  --secondary: #007090;
+  --secondary: #234;
 	--background: #15253090;
-  --darkPrimary: #035;
+  --darkPrimary: #000000C0;
 	--greenText: #409940;
 	--magenta: #9b03a5;
 	--orange: #fa0;
 	--pickerBackground: #004040;
 
+  --list-background: transparent;
+  --list-tile-background: transparent;
+
   --specWordsColor: #cd47e2;
   --userNamesColor: #e09050;
-  --codeSnippetBack: #3b596d90;
+  --codeSnippetBack: #00000000;
   --codeSnippetColor: #a0b8e8;
 
   --firstFamily: 'Poppins', 'Roboto', sans-serif;

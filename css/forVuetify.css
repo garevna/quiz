@@ -9,7 +9,7 @@ html {
     background-color:transparent!important;
     min-height: 100vh!important;
 		top:50px;
-		background-image: url(../images/columns.gif);
+		/* background-image: url(../images/columns.gif); */
     background-position: center;
     background-size: 90vmax;
 }
@@ -21,11 +21,21 @@ html {
     color: var(--textColor);
 }
 
+.application .theme--dark.tabs__bar, .theme--dark .tabs__bar {
+	background-color: transparent;
+	color: var(--textColor);
+}
+
 .theme--dark .btn, .theme--dark .icon,
 .theme--dark .tabs__bar .tabs__div,
 .badge {
     text-shadow: 1px 1px 2px #00000090!important;
 }
+/* .theme--dark .tabs__bar {
+	background-color: var(--darkPrimary);
+	background-color: transparent;
+	color: var(--textColor);
+} */
 
 .chip .chip__content {
 	white-space: inherit!important;
@@ -99,26 +109,32 @@ ul.expansion-panel {
 }
 .list {
   padding: 0;
-  background: var(--orange)!important;
+  /* background: var(--orange)!important; */
+	background-color: var(--list-background);
 }
 
 .list__tile {
-    background-color: var(--secondary);
+    /* background-color: var(--secondary); */
+		background-color: var(--list-tile-background);
     color: #fff!important;
 }
 .list__tile--link {
-    background-color: var(--secondary);
+    /* background-color: var(--secondary); */
 		color: #var(--darkPrimary);
+		background-color: var(--list-tile-background);
 }
 .list__tile--active {
     color: #557!important;
+		background-color: #ffffff90;
 }
 .list__tile__title {
-	font-size: 1.2rem!important;
+	font-size: 1.0rem!important;
+	font-weight: lighter;
 }
 .navigation-drawer {
-	height: 100%;
-	background-color: var(--secondary);
+	height: 100vh;
+	/* background-color: var(--secondary); */
+	background-color: transparent;
 }
 aside.navigation-drawer {
 	height:85%;

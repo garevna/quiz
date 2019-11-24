@@ -1,4 +1,4 @@
-.quiz-container {
+/* .quiz-container {
     position: fixed;
     top:20%;
     bottom:10%;
@@ -7,7 +7,16 @@
     border:solid 1px white;
     overflow:auto;
     padding: 10px 20px;
+} */
+
+.quiz-container{
+    position:fixed;
+    top:0;
+    left:0;
+    bottom:30px;
+    right:0
 }
+
 .quiz-container-actions {
     position: fixed;
     height:50px;

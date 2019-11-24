@@ -7,7 +7,7 @@ body {
   bottom:0;
   right:0;
   margin:0px;
-  overflow:hidden;
+  overflow-y:auto;
   background-color: var(--primary)!important;
   font-family: var(--bodyFamily)!important;
   font-size:1rem!important;
@@ -22,6 +22,45 @@ p {
     color: var(--textColor);
 }
 
+#parallax-container {
+  position:fixed;
+  top:0;
+  left:0;
+  bottom: 0;
+  right:0;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin:0;
+}
+
+.parallax-element {
+  width:100vw;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  transition: all 4s;
+}
+
+.center-js {
+  position: fixed;
+  width: 100px;
+  height: 100px;
+  top: calc(50vh - 50px);
+  left: calc(50vw - 50px);
+  mix-blend-mode: hard-light;
+  -webkit-filter: drop-shadow(4px 4px 5px #000000b0);
+  filter: drop-shadow(4px 4px 5px #000000b0);
+  transition: all 0.5s;
+}
+
+.center-js:hover {
+  width: 110px;
+  height: 110px;
+  mix-blend-mode: multiply;
+  cursor:pointer;
+}
+
 footer {
 	position:fixed;
 	box-sizing:border-box;
@@ -31,7 +70,7 @@ footer {
 	height:40px;
 	padding:8px 10px;
 	text-align:right;
-	background-color: #aab!important;
+	background-color: transparent!important;
   font-family: var(--footerFamily);
   font-size: 18px;
   text-shadow: 1px 1px 2px #00000090;
@@ -60,19 +99,25 @@ input[type="checkbox"] {
   font-family: var(--subheaderFamily);
 }
 
+.toolbar__title {
+  text-shadow: 1px 1px 1px #00000090;
+}
+
 ::-webkit-scrollbar {
 	width: 7px;
 	height: 7px;
 }
 ::-webkit-scrollbar-track {
-	background: #079;
+	background: transparent;
 	box-shadow: inset -0px -0px 2px rgba(0, 20, 30, 0.8)
 }
 ::-webkit-scrollbar-thumb {
 	width: 6px;
-	background-image: linear-gradient(to right, #fa0, #f70);
-	box-shadow: inset 1px 1px 1px #eef;
+	/* background-image: linear-gradient(to right, #ffffff90, #ffffff50); */
+  background: #00000050;
+  /* mix-blend-mode: color-burn; */
+	box-shadow: inset 1px 1px 1px #fff;
 }
 ::-webkit-scrollbar-corner {
-	background-color: #fa0;
+	background-color: #fff;
 }

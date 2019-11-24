@@ -3,6 +3,7 @@
 const appFooter = {
   template: `
     <footer class = "text-xs-right">
+      <canvas-element text="✈"></canvas-element>
       <div>
           <div class="text-xs-right">
             <v-tooltip bottom nudge-top="-80">

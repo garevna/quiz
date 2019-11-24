@@ -15,13 +15,15 @@ import appFooter from 'JS/appFooter'
 import QuizComponent from 'JS/QuizComponent'
 import LoginComponent from 'JS/loginComponent'
 import UserInfo from 'JS/userInfo'
-import CubeComponent from 'JS/cube'
 
 import store from 'JS/DataStore'
 
 import rootCSS from 'CSS/root.css'
 import mainCSS from 'CSS/main.css'
 import forVuetify from 'CSS/forVuetify.css'
+
+import Parallax from 'JS/parallax'
+
 
 new Vue ( {
 	store,
@@ -39,7 +41,8 @@ new Vue ( {
 	    },
 			login: false,
 			dialog: false,
-			showInfo: false
+			showInfo: false,
+			showFooter: true
 		}
 	},
 	computed: {
@@ -88,13 +91,13 @@ new Vue ( {
 		})
 		this.$vuetify.theme = {
 				primary: '#36465d',
-				secondary: '#007090',
+				secondary: '#234',
 				accent: '#75859b',
 				error: '#d00',
 				info: '#09b',
 				success: '#050',
 				warning: '#fa0',
-				codeSection: "#003040"
+				codeSection: "#00000000"
 		}
 		this.windowResized ()
 	},
@@ -124,7 +127,7 @@ new Vue ( {
 						this.$store.commit ( "setUser", __user ) : null
 		},
 		windowResized () {
-        this.$emit ( 'win-resize' )
+				this.showFooter = window.innerHeight > 700
     }
 	},
 	components: {
@@ -133,14 +136,17 @@ new Vue ( {
 		'quiz-component': QuizComponent,
 		'login-component': LoginComponent,
 		'user-info': UserInfo,
-		'cube-element': CubeComponent
+
+		'parallax-back' : Parallax
 	},
 	template: `
 	<v-app dark class = "main-content">
-				<v-toolbar class = "primary" app v-if = "!startQuiz">
-						<v-btn @click.stop = "drawer = !drawer" dark color = "primary" icon>
-								<v-icon>menu</v-icon>
-						</v-btn>
+			<parallax-back></parallax-back>
+
+				<v-toolbar class = "transparent" app v-if = "!startQuiz">
+						<img class="center-js"
+						     src="https://cdn.glitch.com/a4e0a9fd-ea7b-47cf-b52a-48fd6359c559%2Fjs-icon.svg"
+								 @click.stop = "drawer = !drawer">
 
 						<v-toolbar-title v-if = "login">
 							<v-avatar v-if = "user.photoURL">
@@ -168,28 +174,18 @@ new Vue ( {
 						</v-menu>
 				</v-toolbar>
 
-				<cube-element
-						front="./images/front.gif"
-						back="./images/js-cube.png"
-						left="./images/left.gif"
-						right="./images/right.gif"
-						bottom="./images/bottom.gif"
-						top="./images/top.gif"
-						place="150, 150"
-						dimension="200,200">
-				</cube-element>
-
 				<login-component v-if="dialog"></login-component>
 
-				<v-footer class="glass" app>
-					<img src = "./images/back.png" width="40">
+				<v-footer class="glass" app v-if = "showFooter">
+
+					<img src = "./images/personage.gif" width="30" style="position:absolute; bottom:0;">
 					<v-spacer></v-spacer>
 					<v-tooltip bottom nudge-top="-30">
 						<span slot="activator">
 							&copy;&nbsp;Irina Fylyppova 2018
 						</span>
 						<span>
-							<img src="./images/my-photo.png" width="40">
+							<img src="./images/my-photo.jpg" width="50">
 						</span>
 					</v-tooltip>
 				</v-footer>
