@@ -1,20 +1,50 @@
 const Canvas = (
   "canvas-element", {
-    props: [ "text" ],
+    props: [ "color", "width", "height", "imageURL", "text" ],
     data: function () {
       return {
         mode: "draw",
-
+        canvas: document.getElementById ( "canvas" )
       }
     },
     computed: {
       mainSize () {
         return this.dimension ? Math.min ( ...this.dimension.split(",").map(item => Number( item.trim() ) ) ) : 100
+      },
+      imageWidth () {
+        return this.width ? this.width <= 200 ? this.width : 200 : 100
+      },
+      imageHeight () {
+        return this.height ? this.height <= 200 ? this.height : 200 : 100
+      },
+      canvasWidth () {
+        return Math.min ( this.imageWidth * 2, 300 )
+      },
+      canvasHeight () {
+        return Math.min ( this.imageHeight * 2, 300 )
+      },
+      offsetLeft () {
+        return Math.round ( ( 300 - this.imageWidth ) / 2 )
+      },
+      offsetTop () {
+        return Math.round ( ( 300 - this.imageHeight ) / 2 )
       }
     },
-    template: `<canvas id="canvas" width=${window.innerWidth} height="40"></canvas>`,
+    template: `
+      <figure style="width:300px;height:300px;">
+        <canvas id="canvas"
+                :width="canvasWidth"
+                :height="canvasHeight">
+        </canvas>
+      </figure>
+      `,
     methods: {
       init () {
+          this.canvas.style = `
+              position: absolute;
+              top: ${this.offsetTop}px;
+              left:${this.offsetLeft}px;
+          `
           this.createStaticPoints()
           this.canvas.points = []
           this.staticPoints.forEach (
@@ -60,10 +90,17 @@ const Canvas = (
               .getPropertyValue( '--primary' );
 
           this.ctx.clearRect ( 0, 0, this.canvas.width, this.canvas.height );
-          this.ctx.font = "bold 100px Arial";
-          this.ctx.lineWidth = 2;
-          this.ctx.strokeStyle = color;
-          this.ctx.strokeText ( this.staticText, 50, 100 );
+          let canvasImage = document.body.appendChild ( document.createElement ( "img" ) )
+          canvasImage.style.display = "none"
+          // img.id = "sourceImage"
+          canvasImage.src = "./images/js-icon.svg"
+          let width  = this.width || 80,
+              height = this.height || 80
+          // this.ctx.font = "bold 100px Arial";
+          // this.ctx.lineWidth = 2;
+          // this.ctx.strokeStyle = color;
+          // this.ctx.strokeText ( this.staticText, 50, 100 );
+          this.ctx.drawImage( canvasImage, 0, 0, width, height );
 
           const imageData = this.ctx.getImageData( 0, 0, this.canvas.width, this.canvas.height );
           let ctxData = imageData.data;
@@ -79,7 +116,7 @@ const Canvas = (
       },
       clickHandler () {
 
-          this.staticText = this.staticText === "JS" ? "✈" : "JS"
+          // this.staticText = this.staticText === "JS" ? "✈" : "JS"
           if ( !this.canvas.points.length ) {
               this.init()
               this.mode =  "draw"
@@ -107,8 +144,7 @@ const Canvas = (
       this.staticText = this.text || ""
       this.init()
       this.loop()
-
-    }
+    },
   }
 )
 
@@ -119,7 +155,16 @@ class CanvasPoint {
         this.canvas = canvas;
         this.ctx = ctx;
         this.target = target;
-        this.color = this.colors [ Math.round ( Math.random() * ( this.colors.length - 1 ) ) ];
+        this.color = this.color ? this.color.length === 4 ?
+          this.color.slice(1).split("")
+            .map( c => parseInt ( c, 16 ) * parseInt ( c, 16 ) ) :
+              this.color.length === 7 ? [
+                  parseInt ( color.slice(1,3), 16 ),
+                  parseInt ( color.slice(3,5), 16 ),
+                  parseInt ( color.slice(5,7), 16 )
+              ] : this.colors [ Math.round ( Math.random() * ( this.colors.length - 1 ) ) ]
+               : this.colors [ Math.round ( Math.random() * ( this.colors.length - 1 ) ) ]
+
         this.color[3] = 255
 
         Object.defineProperty ( this, "distance", {

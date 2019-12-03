@@ -143,16 +143,14 @@ const QuizLevel = {
   },
   template: `
     <quiz-template :params = "params">
-        <div slot = "question" v-if = "quizData.type !== 'finish'">
-          <v-chip text-color="white">
-            <v-avatar class="accent">{{level}}</v-avatar>
+        <div slot = "question" v-if = "quizData.type !== 'finish'" style="padding: 5px 20px">
+            <v-avatar color="warning">{{level}}</v-avatar>
             {{ quizData.question }}
-          </v-chip>
         </div>
 
         <v-card-text slot = "choice" class = "transparent">
-            <v-checkbox
-                 v-for = "( ch, ind ) in quizData.choiceVariants"
+            <v-checkbox color="#fff"
+                        v-for = "( ch, ind ) in quizData.choiceVariants"
                         :key = "ind"
                         :label = "ch"
                         :value = "ind"
@@ -175,7 +173,7 @@ const QuizLevel = {
                                      quizData.inputLegend.after : ''"
                           :prefix = "quizData.inputLegend ?
                                      quizData.inputLegend.before : ''"
-                          box
+                          filled
                           v-model = "answer"
                           style = "max-width:fit-content;">
             </v-text-field>
@@ -199,15 +197,6 @@ const QuizLevel = {
               <js-code v-bind:text.sync = "quizData.wrongContent"
                        contenteditable = true>
               </js-code>
-              <!--<v-text-field name = "wrongContent"
-                            class = "codeSection"
-                            hide-details solo
-                            row-height = "18"
-                            multi-line
-                            rows = 25
-                            auto-grow
-                            v-model = "quizData.wrongContent">
-              </v-text-field>-->
         </v-card-text>
 
         <v-card-text slot = "results" :class="quizData.fone"

@@ -1,83 +1,179 @@
 'use strict'
 
+import { sha256, sha224 } from 'MODULES/js-sha256'
+
 const LoginComponent = ( 'login-component', {
-	data: function () {
-		return {
-				fname: this.$root.$store.state.userInfo.fname,
-				name: this.$root.$store.state.userInfo.name,
-				photoURL: this.$root.$store.state.userInfo.photoURL,
-				nameRules: [
-						v => !!v || 'Обязательное поле',
-						v => (v && (/[А-Я, а-я]*/.test(v)) && v.length <= 20) || 'Не более 20 символов кириллицы'
-						// v => /[А-Я, а-я]*/.test(v) || 'Кириллицей, пожалуйста'
-				],
-				urlRules: [
-			      v => ( v && /^https{0,1}:\/\/[\w]+\.[\w]{2,3}/.test(v) ) || 'Некорректный URL'
-		    ],
-		}
-	},
-	computed: {
+  data () {
+    return {
+      cardClass: "mb-8 py-5 px-12 dark-card",
+      cardHeight: 150,
+      stepperColor: "#590",
+      logins: null,
+			login: "",
+      password: "",
+      showPassText: false,
+      color: "#09b",
+      user: {},
+      registered: false,
+      stage: 0,
+      backIcon: 'chevron_left',
+      backIconColor: "#09b",
 
-	},
-	template: `
-	<v-container grid-list-lg class="transparent" style="max-width: 500px;">
-				<v-card>
-					<v-card-title>
-						<span class="headline">Регистрация</span>
-					</v-card-title>
-					<v-card-text>
-						<v-container grid-list-md>
-							<v-layout wrap>
-								<v-flex xs12>
-									<v-text-field label="Фамилия"
-																required
-																v-model="fname"
-																:rules = "nameRules">
-									</v-text-field>
-								</v-flex>
-								<v-flex xs12>
-									<v-text-field label="Имя"
-																required
-																v-model="name"
-																:rules = "nameRules">
-									</v-text-field>
-								</v-flex>
-								<v-flex xs12>
-									<v-text-field label="URL фото"
-																v-model= "photoURL"
-																:rules = "urlRules"
-									>
-									</v-text-field>
-								</v-flex>
-							</v-layout>
-						</v-container>
-					</v-card-text>
-					<v-card-actions>
-						<v-spacer></v-spacer>
-						<v-btn color="white" flat @click="closeDialog">Close</v-btn>
-						<v-btn color="yellow" flat @click="saveNewUser">Save</v-btn>
-					</v-card-actions>
-				</v-card>
-	</v-container>
-	`,
-	methods: {
-		closeDialog: function () {
-			this.$root.$emit( 'close-dialog' )
+      theFile: null,
+      avatar: "https://www.themelister.com/templates/nabster/dleimages/noavatar.png",
+    }
+  },
+
+  computed: {
+
+     validLogin: function () {
+       return this.login && this.logins
+          .filter ( login => login.indexOf ( this.login ) !== -1 )
+              .length !== 0
+     },
+
+    loginHint: function () {
+      return !this.login ? "Enter login" :
+             this.validLogin ? "Valid" : `User ${this.login} doesn't exist`
+    },
+
+    loginColor: function () {
+        return this.validLogin ? "#09b" : "#f50"
+    },
+
+		validPassword: function () {
+			  return sha256 ( this.password ) === this.user.passHash
 		},
-		saveNewUser: function () {
-				this.$root.$store.commit ( 'setUser', {
-					fname: this.fname,
-					name: this.name,
-					photoURL: this.photoURL,
-					attempts: 0
-				})
-				this.$root.$store.commit ( "setCookie" )
-				this.$root.$emit( 'sign-in' )
-		}
-	},
-	mounted: function () {
 
-	}
+    passwordLabel: function () {
+        return `Password for ${this.login}`
+    },
+
+    passColor: function () {
+        return !this.validPassword ? "#f00" : "#09b"
+    },
+
+    passHint: function () {
+        return !this.validPassword ? "Incorrect password" : "correct password"
+    },
+  },
+
+  methods: {
+
+    async getUserInfo () {
+
+      if ( this.validLogin ) {
+        this.user = await this.$root.$store.dispatch ( "getUserInfo", this.login )
+				this.stage = 2
+      }
+
+    },
+
+    async getLogins () {
+      this.logins = Object.keys (
+          await ( await fetch ( "https://garevna-js-quiz.glitch.me/forms/all" ) ).json()
+      )
+    },
+
+		enter () {
+
+			this.validPassword ? this.setUserData () : null
+			this.$root.$emit ( "sign-in-finished" )
+			console.log ( this.$root.$store.state.userInfo )
+		},
+
+    exit () {
+        this.$root.$emit ( "sign-in-finished" )
+    },
+
+    setUserData () {
+          document.cookie = `user=${this.login}`
+          document.cookie = `pass=${this.user.passHash}`
+					console.log ( this.user )
+          this.$root.$store.commit ( 'setUser', {
+							login: this.login,
+							name: this.user.name,
+							fname: this.user.fname,
+							registered: this.user.registered,
+							photoURL: this.user.photoURL,
+							passHash: this.user.passHash
+					})
+					this.$root.$store.commit ( "setUserResults", this.user.results )
+    },
+  },
+
+  created () {
+      this.getLogins().then ( () => this.stage = 1 )
+  },
+
+  template: `
+  <v-container fluid fill-height>
+   <v-stepper v-model="stage" dark
+              class="dark-card mx-auto"
+              v-if="user">
+    <v-stepper-header dark>
+          <v-stepper-step :complete="validLogin"
+                          step="1"
+                          :color="stepperColor">
+          </v-stepper-step>
+
+      <v-divider></v-divider>
+
+          <v-stepper-step :complete="stage > 2"
+                          step="2"
+                          :color="stepperColor">
+          </v-stepper-step>
+
+    </v-stepper-header>
+
+    <v-stepper-items class="transparent" dark>
+      <v-stepper-content step="1">
+        <v-card :class="cardClass"
+                :height="cardHeight">
+          <v-text-field v-model="login"
+                        :hint="loginHint"
+                        label="User login"
+                        :color="loginColor"
+												@change.once="getUserInfo">
+          </v-text-field>
+        </v-card>
+
+        <v-btn class="transparent"
+               v-if="validLogin"
+               @click="getUserInfo">
+          Continue
+        </v-btn>
+
+        <v-btn transparent text @click="exit">Cancel</v-btn>
+      </v-stepper-content>
+
+      <v-stepper-content step="2">
+        <v-card :class="cardClass"
+                :height="cardHeight">
+          <v-text-field v-model="password"
+                        autofocus
+                        :hint="passHint"
+                        :label="passwordLabel"
+                        :append-icon="showPassText ? 'mdi-eye' : 'mdi-eye-off'"
+                        :type="showPassText ? 'text' : 'password'"
+                        @click:append="showPassText = !showPassText"
+                        :color="passColor">
+          </v-text-field>
+        </v-card>
+
+        <v-btn class="transparent"
+               v-if="passHint === 'correct password'"
+               @click="enter">
+          Submit
+        </v-btn>
+
+        <v-btn transparent text @click="exit">Cancel</v-btn>
+      </v-stepper-content>
+
+    </v-stepper-items>
+  </v-stepper>
+</v-container>
+  `
 })
 
 export default LoginComponent

@@ -16,12 +16,16 @@ const quizStore = new Vuex.Store ({
         levels: []
       },
       quizRawData: null,
+      backgroundPictures: [ 402, 702, 516, 404, 405, 406, 705, 408, 509, 440, 410, 448, 704, 417, 147, 316 ],
       gameOverPictureURL: "https://drive.google.com/uc?export=download&id=0BxaMB69y7fvSZVhfeXVPblhxNzA",
       successPictureURL: "https://drive.google.com/uc?export=download&id=0BxaMB69y7fvSd3U0S09YUkkwanc",
       failurePictureURL: "https://drive.google.com/uc?export=download&id=0BxaMB69y7fvSMzNOUGc3QndEOGM",
       userInfo: {
+          login: "",
           fname: "",
           name: "",
+          registered: "",
+          passHash: "",
           photoURL: ""
       },
       userResults: {}
@@ -70,6 +74,7 @@ const quizStore = new Vuex.Store ({
             quiz.inputLegendAfter = quiz.inputLegendAfter
                   .split( /[\s]*____/ )[0]
         }
+
         function quizTypeChoice () {
             quiz.choiceVariants = quiz.choiceVariants
                 .split( /[\s]*____/ )[0]
@@ -86,6 +91,7 @@ const quizStore = new Vuex.Store ({
                    )
                 )
         }
+
         function quizTypeFindError () {
             quiz.wrongContent = quiz.wrongContent.split( /[\s]*____/ )[0]
             quiz.rightContent = quiz.rightContent.split( /[\s]*____/ )[0]
@@ -98,8 +104,11 @@ const quizStore = new Vuex.Store ({
           state.mainDataIsReady ?
           state.mainData.map ( item => item.name ) : []
   },
+
   mutations: {
+
     setQuizName: ( state, name ) => state.quizName = name,
+
     initQuizData: state => {
       state.quizData = {
           gameOverPictureURL: state.gameOverPictureURL,
@@ -111,10 +120,13 @@ const quizStore = new Vuex.Store ({
           levels: []
       }
     },
+
     getRawData: ( state, text ) => state.quizRawData = text,
+
     pushLevelData: ( state, levelData ) => {
          state.quizData.levels.push ( levelData )
     },
+
     buildQuiz: state => {
         state.quizData.maxScore = 0
         for ( var level of state.quizData.levels ) {
@@ -125,41 +137,61 @@ const quizStore = new Vuex.Store ({
         }
         state.quizReady = true
     },
+
     saveQuizResults: ( state, params ) => {
         state.quizData.score += params.score
         state.quizData.lives -= params.lives
     },
-    getMainData: ( state, mainData ) => {
+
+    setMainData: ( state, mainData ) => {
         state.mainData = mainData
         state.mainDataIsReady = true
         state.mainMenuOptions = mainData.map ( item => item.name )
     },
-    setUser: ( state, userInfo ) => {
-        state.userInfo = userInfo
-        let user = `${state.userInfo.fname} ${state.userInfo.name}`
-        if ( user ) {
-          let res = localStorage.getItem ( user )
-          state.userResults = res ? JSON.parse ( res ) : {}
-        }
-		},
+
+    setUser: ( state, userInfo ) => state.userInfo = userInfo,
+
+    setUserResults: ( state, results ) => state.userResults = results,
+
     setCookie: state => {
-        for ( var prop in state.userInfo ) {
-            document.cookie = `${prop}=${state.userInfo[prop]}`
-        }
+        document.cookie = `user=${state.userInfo.login}`
+        document.cookie = `pass=${state.userInfo.passHash}`
     },
+
     saveAttemptResult: state => {
         !state.userResults [ state.quizName ] ?
             state.userResults [ state.quizName ] = [] : null
         state.userResults [ state.quizName ].push (
               Math.round ( state.quizData.score * 100 / state.quizData.maxScore ) + "%"
-            )
+        )
         localStorage.setItem (
             `${state.userInfo.fname} ${state.userInfo.name}`,
             JSON.stringify ( state.userResults )
         )
     }
   },
+
   actions: {
+
+      async getUserInfo ( context, login ) {
+        let error = null
+        let response = await fetch ( `https://garevna-js-quiz.glitch.me/forms/${login}` )
+        if ( response.headers.get ( "Content-Type" ).indexOf ( "application/json" ) === 0 ) {
+            return { error: `User ${login} was not found` }
+        }
+
+        let formData = await response.formData()
+
+        return {
+            name:       formData.get( "name" ),
+            fname:      formData.get( "lastName" ),
+            passHash:   formData.get( "passHash" ),
+            photoURL:   URL.createObjectURL ( formData.get( "avatar" ) ),
+            registered: formData.get( "registered" ),
+            results:    JSON.parse ( formData.get ( "results" ) )
+        }
+      },
+
       getQuizData ( context, params ) {
           context.state.quizReady = false
           context.commit ( 'initQuizData' )
@@ -174,6 +206,15 @@ const quizStore = new Vuex.Store ({
               context.commit ( 'buildQuiz' )
             }
           )
+      },
+
+      saveResults ( context, results ) {
+          let formData = new FormData()
+          formData.set ( "results", JSON.stringify ( context.state.userResults ) )
+          fetch ( `https://garevna-js-quiz.glitch.me/form/${context.state.userInfo.login}`, {
+              method: "PATCH",
+              body: formData
+          }).then ( response => console.log ( response.ok ) )
       }
   }
 })

@@ -8,6 +8,16 @@ const NavigationPanel = {
       }
     },
     computed: {
+        width: {
+          get: function () {
+            return Math.max ( window.innerWidth/2, 300 )
+          }
+        },
+        height: {
+          get: function () {
+            return window.innerHeight - 100
+          }
+        },
         localDrawer: {
 		        get: function () {
               return this.$root.drawer
@@ -18,47 +28,52 @@ const NavigationPanel = {
         }
     },
     template: `
-      <v-container class = "transparent">
-        <v-navigation-drawer absolute
-                class = "transparent"
-                app temporary clipped
-                width="${window.innerWidth/2}"
-                v-model = "localDrawer">
-            <v-list class="pa-0 transparent">
-                <v-list-tile avatar>
-                    <v-list-tile-avatar tile>
+      <v-container class="transparent">
+        <v-navigation-drawer app
+                             bottom
+                             absolute
+                             temporary
+                             class="transparent"
+                             :width="width"
+                             v-model = "localDrawer">
+            <!--<v-list class="pa-0 transparent">-->
+                <v-list-item>
+                    <v-list-item-avatar tile>
                         <img src="./images/js-icon.svg" width="40">
-                    </v-list-tile-avatar>
-                    <v-list-tile-content>
-                        <v-list-tile-title>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                        <v-list-item-title>
                             &nbsp;&nbsp;Quiz
-                        </v-list-tile-title>
-                    </v-list-tile-content>
-                </v-list-tile>
-            </v-list>
+                        </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+            <!--</v-list>-->
 
-            <v-list class="pt-0 transparent" dense>
+            <!--<v-list class="pt-0 transparent" dense>-->
                 <v-divider></v-divider>
-                <v-list-tile class="transparent"
+                <v-list-item class="transparent"
                              v-for = "item in states"
                              :key = "item"
                              @click = "clickHandler ( item )">
-                    <v-list-tile-action>
+                    <v-list-item-action>
                         <v-icon>assignment</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                        <v-list-tile-title>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                        <v-list-item-title>
                               {{ item }}
-                        </v-list-tile-title>
-                    </v-list-tile-content>
-                </v-list-tile>
-            </v-list>
+                        </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+            <!--</v-list>-->
         </v-navigation-drawer>
       </v-container>
     `,
     methods: {
+
       clickHandler: async function ( val ) {
+        console.log ( val, this.$root.$store.state.mainData )
             this.$root.$emit ( 'closeNavigationPanel' )
+
             let ___data = this.$root.$store.state.mainData
                         .filter ( x => x.name === val )[0]
             location.hash = ___data.folder
@@ -74,4 +89,5 @@ const NavigationPanel = {
 
     }
 }
+
 export default NavigationPanel

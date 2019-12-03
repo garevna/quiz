@@ -1,29 +1,60 @@
 html {
 	overflow: hidden!important;
 }
-.application.theme--dark {
-	background-color:transparent!important;
-	font-family: var(--firstFamily);
+
+.dark-glass {
+		background-color: var(--darkPrimary)!important;
 }
-.application--wrap {
-    background-color:transparent!important;
+
+.v-application.theme--dark,
+.v-application.theme--light,
+.v-application--wrap {
+		background-color:transparent!important;
+		font-family: var(--firstFamily);
+}
+
+/* .v-application--wrap {
+    background-color: transparent!important;
     min-height: 100vh!important;
-		top:50px;
-		/* background-image: url(../images/columns.gif); */
     background-position: center;
-    background-size: 90vmax;
-}
-.application.theme--light {
-      background-color:transparent!important;
-}
-.application .theme--dark.card, .theme--dark .card {
+    background-size: 100vmax;
+} */
+
+.theme--dark.v-sheet,
+.theme--dark.v-card,
+.v-application .theme--dark.v-card {
     background-color: var(--darkPrimary);
     color: var(--textColor);
 }
 
-.application .theme--dark.tabs__bar, .theme--dark .tabs__bar {
+.v-application .theme--dark.tabs__bar, .theme--dark .tabs__bar,
+.theme--light.v-application {
 	background-color: transparent;
 	color: var(--textColor);
+}
+
+.theme--dark.v-tabs>.v-tabs-bar,
+.theme--dark.v-card,
+.theme--light.v-tabs>.v-tabs-bar,
+.theme--light.v-tabs-items {
+	background-color: transparent;
+}
+
+.theme--dark.v-tabs>.v-tabs-bar .v-tab:not(.v-tab--active)>.v-icon,
+.theme--dark.v-tabs>.v-tabs-bar .v-tab:not(.v-tab--active),
+.theme--light.v-tabs>.v-tabs-bar .v-tab:not(.v-tab--active),
+.theme--light.v-tabs>.v-tabs-bar .v-tab:not(.v-tab--active))>.v-icon
+.v-tab.v-tab {
+	color: #fff;
+}
+
+.v-tab.v-tab--active, .v-tab--active .v-icon {
+    color: #fa0;
+}
+
+.v-application code, .v-application kbd {
+	background-color: transparent;
+	font-size: 0.85rem;
 }
 
 .theme--dark .btn, .theme--dark .icon,
@@ -31,11 +62,33 @@ html {
 .badge {
     text-shadow: 1px 1px 2px #00000090!important;
 }
+
+.theme--light.v-footer, .theme--light.v-sheet,
+.theme--light.v-btn.v-btn--icon,
+.theme--light.v-icon,
+.theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {
+	color: #fff!important;
+}
+
+.theme--light.v-chip:not(.v-chip--active), .v-chip,
+.v-navigation-drawer__content, .v-menu,
+.theme--light.v-list {
+	background-color: var(--darkPrimary);
+}
+
+.theme--dark.v-stepper .v-stepper__step:not(.v-stepper__step--active):not(.v-stepper__step--complete):not(.v-stepper__step--error) .v-stepper__step__step {
+	background-color: transparent;
+}
+
 /* .theme--dark .tabs__bar {
 	background-color: var(--darkPrimary);
 	background-color: transparent;
 	color: var(--textColor);
 } */
+
+.theme--light.v-chip:not(.v-chip--active), .v-chip {
+	padding: 20px 10px;
+}
 
 .chip .chip__content {
 	white-space: inherit!important;
@@ -55,8 +108,8 @@ html {
 }
 
 .container {
-      background-color: transparent!important;
-			max-width:1000px;
+    background-color: transparent!important;
+		max-width:1000px;
 }
 
 .expansion-panel {
@@ -97,6 +150,12 @@ ul.expansion-panel {
 	padding: 0 20px;
 }
 
+.v-input--selection-controls__input input[role=checkbox],
+.v-input--selection-controls__input input[role=radio],
+.v-input--selection-controls__input input[role=switch] {
+	opacity: 1;
+}
+
 .transparent {
 	background-color: transparent;
 	border:0;
@@ -113,24 +172,25 @@ ul.expansion-panel {
 	background-color: var(--list-background);
 }
 
-.list__tile {
+.list__item {
     /* background-color: var(--secondary); */
 		background-color: var(--list-tile-background);
     color: #fff!important;
 }
-.list__tile--link {
+.list__item--link {
     /* background-color: var(--secondary); */
 		color: #var(--darkPrimary);
 		background-color: var(--list-tile-background);
 }
-.list__tile--active {
+.list__item--active {
     color: #557!important;
-		background-color: #ffffff90;
+		background-color: #ffffffb0;
 }
-.list__tile__title {
+.list__item__title {
 	font-size: 1.0rem!important;
 	font-weight: lighter;
 }
+
 .navigation-drawer {
 	height: 100vh;
 	/* background-color: var(--secondary); */
@@ -145,9 +205,3 @@ aside.navigation-drawer {
 	text-shadow: 0px 0px 3px #00000090;
 	padding: 20px 30px;
 }
-/* .card__actions {
-	background-color: var(--magenta);
-}
-.card__actions .btn {
-    margin: 4px 15px;
-} */

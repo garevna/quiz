@@ -23,7 +23,8 @@ const UserInfo = {
     template: `
        <v-dialog max-width = "400" v-model = "showInfo">
                 <v-card v-for = "( item, index ) in resultsHeaders"
-                        :key="index">
+                        :key="index"
+                        dark>
                     <v-card-title class = "warning--text">
                           {{item}}
                     </v-card-title>
@@ -35,9 +36,9 @@ const UserInfo = {
                 </v-card>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn  flat = "flat"
-                            @click.native = "closeInfo">
-                            Close
+                    <v-btn text dark
+                           @click.native = "closeInfo">
+                           Close
                     </v-btn>
                 </v-card-actions>
         </v-dialog>

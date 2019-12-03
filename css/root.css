@@ -2,10 +2,10 @@
 
 :root {
   --textColor: #cde;
-  --primary: #36465d;
+  --primary: #09b;
   --secondary: #234;
 	--background: #15253090;
-  --darkPrimary: #000000C0;
+  --darkPrimary: #00000090!important;
 	--greenText: #409940;
 	--magenta: #9b03a5;
 	--orange: #fa0;

@@ -57,6 +57,7 @@ const QuizComponent = {
         'quiz-level': QuizLevel
     },
     methods: {
+
         finishCallback () {
             this.level = this.quizData.levels.length + 1
             this.$root.$store.commit ( `saveAttemptResult` )
@@ -73,9 +74,11 @@ const QuizComponent = {
                 fone: this.lives <= 0 ? "failureSlide" :
                          this.results.score === this.results.maxScore ?
                                            "successSlide" : "finishSlide"
-            } )
+            })
+            this.$root.$store.dispatch ( "saveResults" )
         }
     },
+
     mounted: function () {
         this.$on ( 'save-quiz-level-results', function ( results ) {
             this.$root.$store.commit ( 'saveQuizResults', results )
