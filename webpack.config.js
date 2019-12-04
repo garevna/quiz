@@ -8,7 +8,7 @@ const webpack = require("webpack")
 module.exports = {
     entry: './components/vueInstance.js',
     //mode: 'production',
-    mode:'development',
+    // mode:'development',
     output: {
         filename: 'index.js',
         path: path.resolve(__dirname, 'build')
@@ -25,18 +25,27 @@ module.exports = {
             }
           }
         },
-        {
-            test: /\.js$/,
-            loader: 'babel-loader',
-            exclude: /node_modules/,
-            query: { presets: [ 'es2015' ] }
-        },
+        // {
+        //     test: /\.js$/,
+        //     loader: 'babel-loader',
+        //     exclude: /node_modules/,
+        //     query: { presets: [ 'es2015', 'es2016', 'es2017' ] }
+        // },
         {
           test: /\.css$/,
           use: [
-            { loader: 'style-loader' },
-            { loader: 'css-loader' }
+            'vue-style-loader',
+            'style-loader',
+            'css-loader'
           ]
+        },
+        {
+          test: /\.s(c|a)ss$/,
+          use: [
+            'vue-style-loader',
+            'css-loader',
+            'sass-loader'
+          ],
         },
         {
             test: /\.(png|jpe?g|gif|svg|ico)$/,
@@ -54,6 +63,9 @@ module.exports = {
             loader: ['style-loader', 'css-loader', 'stylus-loader']
         }
       ]
+    },
+    devServer: {
+        stats: 'errors-only'
     },
     resolve: {
       alias: {
