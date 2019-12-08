@@ -21,7 +21,9 @@ let Parallax, Canvas, NavigationPanel, appFooter, QuizComponent, SignUpComponent
 
 
 async function loadComponents () {
-		const store = ( await import ( './DataStore.js' ) ).default;
+
+		console.log ( __dirname )
+		const store = ( await import ( __dirname + '/DataStore.js' ) ).default;
 
 		[ Parallax, Canvas, NavigationPanel, appFooter, QuizComponent, SignUpComponent, LoginComponent, UserInfo ] =
 		    ( await Promise.all ([
