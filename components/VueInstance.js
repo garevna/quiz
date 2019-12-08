@@ -25,18 +25,18 @@ async function loadComponents () {
 
 		[ Parallax, Canvas, NavigationPanel, appFooter, QuizComponent, SignUpComponent, LoginComponent, UserInfo ] =
 		    ( await Promise.all ([
-						import ( path.join ( __dirname, '/parallax.js' ) ),
-						import ( path.join ( __dirname, '/CanvasComponent.js' ) ),
-						import ( path.join ( __dirname, '/NavigationPanel.js' ) ),
-						import ( path.join ( __dirname, '/appFooter.js' ) ),
-						import ( path.join ( __dirname, '/QuizComponent.js' ) ),
-						import ( path.join ( __dirname, '/registration.js' ) ),
-						import ( path.join ( __dirname, '/loginComponent.js' ) ),
-						import ( path.join ( __dirname, '/userInfo.js' ) )
+						import ( __dirname + '/parallax.js' ),
+						import ( __dirname + '/CanvasComponent.js' ),
+						import ( __dirname + '/NavigationPanel.js' ),
+						import ( __dirname + '/appFooter.js' ),
+						import ( __dirname + '/QuizComponent.js' ),
+						import ( __dirname + '/registration.js' ),
+						import ( __dirname + '/loginComponent.js' ),
+						import ( __dirname + '/userInfo.js' )
 		    ])).map ( item => item.default )
 
 
-		const Root = ( await import ( path.join ( __dirname, '/root.js' ) ) ).default
+		const Root = ( await import ( __dirname + '/root.js' ) ).default
 
 		new Vue ({
 			store,
