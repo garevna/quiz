@@ -1,9 +1,12 @@
 'use strict'
 
-const fs = require('fs')
+// const fs = require('fs')
 const path = require('path')
-const glob = require("glob")
+// const glob = require("glob")
 const webpack = require("webpack")
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const VuetifyLoaderPlugin = require ( 'vuetify-loader/lib/plugin' )
+
 
 module.exports = {
     entry: './components/vueInstance.js',
@@ -11,8 +14,26 @@ module.exports = {
     // mode:'development',
     output: {
         filename: 'index.js',
-        path: path.resolve(__dirname, 'build')
+        path: path.resolve(__dirname, 'public'),
+        publicPath: '/public/',
+        chunkFilename: '[name].js'
     },
+    // optimization: {
+    //     splitChunks: {
+    //       cacheGroups: {
+    //         default: false,
+    //         vendors: false,
+    //         common: {
+    //           chunks: 'all',
+    //           test: /node_modules\/vue\/dist/
+    //         },
+    //         vendor: {
+    //             chunks: 'all',
+    //             test: /node_modules/
+    //         },
+    //       }
+    //     }
+    // },
     module: {
       rules: [
         {
@@ -25,12 +46,11 @@ module.exports = {
             }
           }
         },
-        // {
-        //     test: /\.js$/,
-        //     loader: 'babel-loader',
-        //     exclude: /node_modules/,
-        //     query: { presets: [ 'es2015', 'es2016', 'es2017' ] }
-        // },
+        {
+            test: /\.js$/,
+            loader: 'babel-loader',
+            exclude: /\/node_modules\//
+        },
         {
           test: /\.css$/,
           use: [
@@ -40,11 +60,36 @@ module.exports = {
           ]
         },
         {
-          test: /\.s(c|a)ss$/,
+          test: /\.(eot|svg|ttf|woff|woff2)(\?.*)/,
+          use: {
+            loader: 'file-loader',
+            options: {
+              name: `[path][name].[ext]`,
+            }
+          }
+        },
+        {
+          test: /\.(sa|sc)ss$/,
           use: [
             'vue-style-loader',
             'css-loader',
-            'sass-loader'
+            {
+              loader: 'sass-loader',
+              // Requires sass-loader@^7.0.0
+              options: {
+                implementation: require('sass'),
+                fiber: require('fibers'),
+                indentedSyntax: true // optional
+              },
+              // Requires sass-loader@^8.0.0
+              options: {
+                implementation: require('sass'),
+                sassOptions: {
+                  fiber: require('fibers'),
+                  indentedSyntax: true // optional
+                },
+              },
+            },
           ],
         },
         {
@@ -56,12 +101,18 @@ module.exports = {
         },
         {
             test: /https:\/\/drive\.google\.com\/uc*/,
-            loader: 'file-loader'
+            loader: 'file-loader',
+
         },
         {
             test: /\.styl$/,
             loader: ['style-loader', 'css-loader', 'stylus-loader']
         }
+      ],
+      noParse: [
+        /\/node_modules\/vue\/dist\/*.js/,
+        /\/node_modules\/vuex\/dist\/*.js/,
+        /\/node_modules\/vuetify\/dist\/*.js/
       ]
     },
     devServer: {
@@ -69,7 +120,7 @@ module.exports = {
     },
     resolve: {
       alias: {
-        'vue$': 'vue/dist/vue.esm.js',
+        'vue$': 'vue/dist/vue.common.js',
         MODULES: path.resolve(__dirname, 'node_modules/'),
         CSS: path.resolve(__dirname, 'css/'),
         PRIZM: path.resolve(__dirname, 'themes/'),
@@ -77,5 +128,37 @@ module.exports = {
         DATA: path.resolve(__dirname, 'data/'),
         PICTURES: path.resolve(__dirname, 'images/')
       }
-    }
+    },
+    plugins: [
+      new BundleAnalyzerPlugin(),
+      new VuetifyLoaderPlugin({
+        match (originalTag, { kebabTag, camelTag, path, component }) {
+          if (kebabTag.startsWith('core-')) {
+            return [camelTag, `import ${camelTag} from '@/components/core/${camelTag.substring(4)}.vue'`]
+          }
+        }
+      }),
+      new webpack.ProvidePlugin({
+        Vue: ['vue/dist/vue.common.js']
+      })
+      // new webpack.optimize.SplitChunksPlugin({
+      //       cacheGroups: {
+      //           commons: {
+      //               // Omitting test selects all modules
+      //               test: /[\\/]node_modules[\\/]/,
+      //               name: 'shared',
+      //               chunks: 'initial',
+      //               minChunks: Infinity
+      //           }
+      //       }
+      //   }),
+        // new webpack.optimize.SplitChunksPlugin({
+        //     cacheGroups: {
+        //         vendor: {
+        //             name: 'runtime',
+        //             chunks: 'async'
+        //         }
+        //     }
+        // }),
+    ]
 }

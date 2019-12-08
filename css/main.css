@@ -22,26 +22,6 @@ p {
     color: var(--textColor);
 }
 
-#parallax-container {
-  position:fixed;
-  top:0;
-  left:0;
-  bottom: 0;
-  right:0;
-  overflow: hidden;
-  box-sizing: border-box;
-  margin:0;
-}
-
-.parallax-element {
-  width:100vw;
-  height: 100vh;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  transition: all 4s;
-}
-
 .center-js {
   position: fixed;
   top: calc(50vh - 150px);

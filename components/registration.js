@@ -133,7 +133,7 @@ const SignUpComponent = ( 'sign-up-component', {
             body: formData
       }).then ( response => {
           if ( response.ok ) {
-            
+
             document.cookie = `user=${login}`
             document.cookie = `pass=${this.user.passHash}`
 

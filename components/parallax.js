@@ -10,9 +10,9 @@ const Parallax = ( "parallax-back", {
       }
     },
     template: `
-    <section id="parallax-container">
-        <div id="parallax-element" class="parallax-element"></div>
-    </section>
+      <section id="parallax-container">
+          <div id="parallax-element"></div>
+      </section>
     `,
     methods: {
       changePicture () {
@@ -29,19 +29,43 @@ const Parallax = ( "parallax-back", {
         if ( this.moveCounter-- === 0 ) {
           this.moveCounter = 240
           let src = this.parallax.style.backgroundImage
-          let position = [ "top", "left", "right", "bottom" ][ Math.round(Math.random()*3) ]
+          let position = [ "top", "left", "right", "bottom", "center" ][ Math.round(Math.random() * 4) ]
           this.parallax.style = `
-              width: ${window.innerWidth * ( 1 + Math.random () * 0.5 )}px;
-              height: ${window.innerHeight * ( 1 + Math.random () * 0.5 )}px;
+              width: ${window.innerWidth * ( 1 + Math.random () * 0.3 )}px;
+              height: ${window.innerHeight * ( 1 + Math.random () * 0.3 )}px;
               background-position: ${position};
               background-image: ${src};
-          `
+              background-size: cover;
+              transition: all 2s ease;
+          `;
+          console.log ( this.parallax.style['background-position'])
         }
         requestAnimationFrame ( this.loopParallax.bind(this) )
       }
     },
     mounted () {
+      let container = document.getElementById ( "parallax-container" )
+      container.style = `
+        position:fixed;
+        top:0;
+        left:0;
+        bottom: 0;
+        right:0;
+        overflow: hidden;
+        box-sizing: border-box;
+        margin:0;
+        transition: all 2s ease;
+      `;
+
       this.parallax = document.getElementById ( "parallax-element" )
+      this.parallax.style = `
+        width:100vw;
+        height: 100vh;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        transition: all 2s ease;
+      `
       this.loopParallax ()
     }
 })

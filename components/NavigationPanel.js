@@ -36,7 +36,7 @@ const NavigationPanel = {
                              class="transparent"
                              :width="width"
                              v-model = "localDrawer">
-            <!--<v-list class="pa-0 transparent">-->
+            <v-list class="pa-0 transparent">
                 <v-list-item>
                     <v-list-item-avatar tile>
                         <img src="./images/js-icon.svg" width="40">
@@ -47,10 +47,9 @@ const NavigationPanel = {
                         </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-            <!--</v-list>-->
 
-            <!--<v-list class="pt-0 transparent" dense>-->
                 <v-divider></v-divider>
+
                 <v-list-item class="transparent"
                              v-for = "item in states"
                              :key = "item"
@@ -64,14 +63,13 @@ const NavigationPanel = {
                         </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-            <!--</v-list>-->
+            </v-list>
         </v-navigation-drawer>
       </v-container>
     `,
     methods: {
 
       clickHandler: async function ( val ) {
-        console.log ( val, this.$root.$store.state.mainData )
             this.$root.$emit ( 'closeNavigationPanel' )
 
             let ___data = this.$root.$store.state.mainData

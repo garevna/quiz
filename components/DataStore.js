@@ -1,10 +1,13 @@
 'use strict'
 
-import Vue from 'vue'
-import Vuex from 'vuex'
+// import Vue from 'vue'
+const Vue = require ("vue")
+// import Vuex from 'vuex'
+
+const Vuex = require ("vuex")
 Vue.use ( Vuex )
 
-const quizStore = new Vuex.Store ({
+export default new Vuex.Store ({
   state: {
       quizName: null,
       quizReady: false,
@@ -149,7 +152,7 @@ const quizStore = new Vuex.Store ({
         state.mainMenuOptions = mainData.map ( item => item.name )
     },
 
-    setUser: ( state, userInfo ) => state.userInfo = userInfo,
+    setUser: ( state, userData ) => state.userInfo = JSON.parse( JSON.stringify ( userData ) ),
 
     setUserResults: ( state, results ) => state.userResults = results,
 
@@ -214,9 +217,7 @@ const quizStore = new Vuex.Store ({
           fetch ( `https://garevna-js-quiz.glitch.me/form/${context.state.userInfo.login}`, {
               method: "PATCH",
               body: formData
-          }).then ( response => console.log ( response.ok ) )
+          }).then ( response => console.log ( "Results updated: ", response.ok ) )
       }
   }
 })
-
-export default quizStore
