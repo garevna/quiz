@@ -22,19 +22,21 @@ let Parallax, Canvas, NavigationPanel, appFooter, QuizComponent, SignUpComponent
 
 async function loadComponents () {
 
-		console.log ( __dirname )
-		const store = ( await import ( __dirname + '/DataStore.js' ) ).default;
+		console.log("./ = %s", path.resolve("./"));
+		console.log("__dirname = %s", path.resolve(__dirname));
+
+		const store = ( await import ( './DataStore.js' ) ).default;
 
 		[ Parallax, Canvas, NavigationPanel, appFooter, QuizComponent, SignUpComponent, LoginComponent, UserInfo ] =
 		    ( await Promise.all ([
-						import ( __dirname + '/parallax.js' ),
-						import ( __dirname + '/CanvasComponent.js' ),
-						import ( __dirname + '/NavigationPanel.js' ),
-						import ( __dirname + '/appFooter.js' ),
-						import ( __dirname + '/QuizComponent.js' ),
-						import ( __dirname + '/registration.js' ),
-						import ( __dirname + '/loginComponent.js' ),
-						import ( __dirname + '/userInfo.js' )
+						import ( './parallax.js' ),
+						import ( './CanvasComponent.js' ),
+						import ( './NavigationPanel.js' ),
+						import ( './appFooter.js' ),
+						import ( './QuizComponent.js' ),
+						import ( './registration.js' ),
+						import ( './loginComponent.js' ),
+						import ( './userInfo.js' )
 		    ])).map ( item => item.default )
 
 

@@ -38,7 +38,6 @@ const Parallax = ( "parallax-back", {
               background-size: cover;
               transition: all 2s ease;
           `;
-          console.log ( this.parallax.style['background-position'])
         }
         requestAnimationFrame ( this.loopParallax.bind(this) )
       }
