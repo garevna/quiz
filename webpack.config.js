@@ -126,8 +126,9 @@ module.exports = {
         PRIZM: path.resolve(__dirname, 'themes/'),
         JS: path.resolve(__dirname, 'components/'),
         DATA: path.resolve(__dirname, 'data/'),
-        PICTURES: path.resolve(__dirname, 'images/'),
+        PICTURES: path.resolve(__dirname, 'images/')
       },
+      descriptionFiles: ['package.json'],
       modules: [
         path.join( __dirname, "components" ),
         "/quiz/public",
