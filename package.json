@@ -56,5 +56,15 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/garevna/js-quiz"
+  },
+  "browser": {
+    "./parallax.js": "/quiz/public/parallax.js",
+    "./CanvasComponent.js": "/quiz/public/canvas.js",
+    "./NavigationPanel.js": "/quiz/public/navigation.js",
+    "./appFooter.js": "/quiz/public/footer.js",
+    "./QuizComponent.js": "/quiz/public/quiz.js",
+    "./registration.js": "/quiz/public/registration.js",
+    "./loginComponent.js": "/quiz/public/login.js",
+    "./userInfo.js": "/quiz/public/results.js"
   }
 }
