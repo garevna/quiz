@@ -58,6 +58,9 @@
     "url": "https://github.com/garevna/js-quiz"
   },
   "browser": {
+    "MODULES/js-sha256": "/quiz/public/vendors~login~registration.js",
+
+    "./DataStore.js": "/quiz/public/store.js",
     "./parallax.js": "/quiz/public/parallax.js",
     "./CanvasComponent.js": "/quiz/public/canvas.js",
     "./NavigationPanel.js": "/quiz/public/navigation.js",
