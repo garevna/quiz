@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[3],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["store"],{
 
 /***/ "./components/DataStore.js":
 /*!*********************************!*\

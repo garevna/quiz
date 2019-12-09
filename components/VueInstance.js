@@ -25,22 +25,22 @@ async function loadComponents () {
 		console.log("./ = %s", path.resolve("./"));
 		console.log("__dirname = %s", path.resolve(__dirname));
 
-		const store = ( await import ( './DataStore.js' ) ).default;
+		const store = ( await import ( /* webpackChunkName: "store" */ './DataStore.js' ) ).default;
 
 		[ Parallax, Canvas, NavigationPanel, appFooter, QuizComponent, SignUpComponent, LoginComponent, UserInfo ] =
 		    ( await Promise.all ([
-						import ( './parallax.js' ),
-						import ( './CanvasComponent.js' ),
-						import ( './NavigationPanel.js' ),
-						import ( './appFooter.js' ),
-						import ( './QuizComponent.js' ),
-						import ( './registration.js' ),
-						import ( './loginComponent.js' ),
-						import ( './userInfo.js' )
+						import ( /* webpackChunkName: "parallax" */ './parallax.js' ),
+						import ( /* webpackChunkName: "canvas" */ './CanvasComponent.js' ),
+						import ( /* webpackChunkName: "navigation" */ './NavigationPanel.js' ),
+						import ( /* webpackChunkName: "footer" */ './appFooter.js' ),
+						import ( /* webpackChunkName: "quiz" */ './QuizComponent.js' ),
+						import ( /* webpackChunkName: "registration" */ './registration.js' ),
+						import ( /* webpackChunkName: "login" */ './loginComponent.js' ),
+						import ( /* webpackChunkName: "results" */ './userInfo.js' )
 		    ])).map ( item => item.default )
 
 
-		const Root = ( await import ( __dirname + '/root.js' ) ).default
+		const Root = ( await import ( /* webpackChunkName: "root" */ __dirname + '/root.js' ) ).default
 
 		new Vue ({
 			store,

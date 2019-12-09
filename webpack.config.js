@@ -127,7 +127,12 @@ module.exports = {
         JS: path.resolve(__dirname, 'components/'),
         DATA: path.resolve(__dirname, 'data/'),
         PICTURES: path.resolve(__dirname, 'images/'),
-      }
+      },
+      modules: [
+        path.join( __dirname, "components" ),
+        "/quiz/public",
+        "node_modules"
+      ]
     },
     plugins: [
       new BundleAnalyzerPlugin(),

@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[1],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["quiz"],{
 
 /***/ "./components/JS-code.js":
 /*!*******************************!*\
