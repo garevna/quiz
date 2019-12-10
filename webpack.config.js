@@ -15,7 +15,7 @@ module.exports = {
     output: {
         filename: 'index.js',
         path: path.resolve(__dirname, 'public'),
-        publicPath: '/public/',
+        publicPath: 'public/',
         chunkFilename: '[name].js'
     },
     // optimization: {
@@ -128,10 +128,8 @@ module.exports = {
         DATA: path.resolve(__dirname, 'data/'),
         PICTURES: path.resolve(__dirname, 'images/')
       },
-      descriptionFiles: ['package.json'],
+      // descriptionFiles: ['package.json'],
       modules: [
-        path.join( __dirname, "components" ),
-        "/quiz/public",
         "node_modules"
       ]
     },
@@ -144,9 +142,9 @@ module.exports = {
           }
         }
       }),
-      new webpack.ProvidePlugin({
-        Vue: ['vue/dist/vue.common.js']
-      })
+      // new webpack.ProvidePlugin({
+      //   Vue: ['vue/dist/vue.common.js']
+      // })
       // new webpack.optimize.SplitChunksPlugin({
       //       cacheGroups: {
       //           commons: {
