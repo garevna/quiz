@@ -5,35 +5,23 @@ const path = require('path')
 // const glob = require("glob")
 const webpack = require("webpack")
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const VuetifyLoaderPlugin = require ( 'vuetify-loader/lib/plugin' )
+
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
+module.exports = {
+  plugins: [
+    new VuetifyLoaderPlugin()
+  ]
+}
 
 
 module.exports = {
     entry: './components/vueInstance.js',
-    //mode: 'production',
-    // mode:'development',
     output: {
         filename: 'index.js',
         path: path.resolve(__dirname, 'public'),
         publicPath: 'public/',
         chunkFilename: '[name].js'
     },
-    // optimization: {
-    //     splitChunks: {
-    //       cacheGroups: {
-    //         default: false,
-    //         vendors: false,
-    //         common: {
-    //           chunks: 'all',
-    //           test: /node_modules\/vue\/dist/
-    //         },
-    //         vendor: {
-    //             chunks: 'all',
-    //             test: /node_modules/
-    //         },
-    //       }
-    //     }
-    // },
     module: {
       rules: [
         {
@@ -135,35 +123,13 @@ module.exports = {
     },
     plugins: [
       new BundleAnalyzerPlugin(),
-      new VuetifyLoaderPlugin({
-        match (originalTag, { kebabTag, camelTag, path, component }) {
-          if (kebabTag.startsWith('core-')) {
-            return [camelTag, `import ${camelTag} from '@/components/core/${camelTag.substring(4)}.vue'`]
-          }
-        }
-      }),
-      // new webpack.ProvidePlugin({
-      //   Vue: ['vue/dist/vue.common.js']
+      // new VuetifyLoaderPlugin({
+      //   match (originalTag, { kebabTag, camelTag, path, component }) {
+      //     if (kebabTag.startsWith('core-')) {
+      //       return [camelTag, `import ${camelTag} from '@/components/core/${camelTag.substring(4)}.vue'`]
+      //     }
+      //   }
       // })
-      // new webpack.optimize.SplitChunksPlugin({
-      //       cacheGroups: {
-      //           commons: {
-      //               // Omitting test selects all modules
-      //               test: /[\\/]node_modules[\\/]/,
-      //               name: 'shared',
-      //               chunks: 'initial',
-      //               minChunks: Infinity
-      //           }
-      //       }
-      //   }),
-        // new webpack.optimize.SplitChunksPlugin({
-        //     cacheGroups: {
-        //         vendor: {
-        //             name: 'runtime',
-        //             chunks: 'async'
-        //         }
-        //     }
-        // }),
     ],
 
 }

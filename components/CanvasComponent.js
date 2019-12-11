@@ -32,6 +32,7 @@ const Canvas = (
     },
     template: `
       <figure style="width:300px;height:300px;">
+        <img id="canvas-image" src="./images/js-icon.svg" style="display:none"/>
         <canvas id="canvas"
                 :width="canvasWidth"
                 :height="canvasHeight">
@@ -90,17 +91,8 @@ const Canvas = (
               .getPropertyValue( '--primary' );
 
           this.ctx.clearRect ( 0, 0, this.canvas.width, this.canvas.height );
-          let canvasImage = document.body.appendChild ( document.createElement ( "img" ) )
-          canvasImage.style.display = "none"
-          // img.id = "sourceImage"
-          canvasImage.src = "./images/js-icon.svg"
-          let width  = this.width || 80,
-              height = this.height || 80
-          // this.ctx.font = "bold 100px Arial";
-          // this.ctx.lineWidth = 2;
-          // this.ctx.strokeStyle = color;
-          // this.ctx.strokeText ( this.staticText, 50, 100 );
-          this.ctx.drawImage( canvasImage, 0, 0, width, height );
+          let canvasImage = document.getElementById ( "canvas-image" )
+          this.ctx.drawImage( canvasImage, 0, 0, this.width || 80, this.height || 80 );
 
           const imageData = this.ctx.getImageData( 0, 0, this.canvas.width, this.canvas.height );
           let ctxData = imageData.data;
@@ -115,8 +107,7 @@ const Canvas = (
           }
       },
       clickHandler () {
-
-          // this.staticText = this.staticText === "JS" ? "✈" : "JS"
+          
           if ( !this.canvas.points.length ) {
               this.init()
               this.mode =  "draw"
@@ -151,14 +142,14 @@ const Canvas = (
 
 class CanvasPoint {
 
-    constructor ( canvas, ctx, target ) {
+    constructor ( canvas, ctx, target, color ) {
         this.canvas = canvas;
         this.ctx = ctx;
         this.target = target;
-        this.color = this.color ? this.color.length === 4 ?
-          this.color.slice(1).split("")
+        this.color = color ? color.length === 4 ?
+          color.slice(1).split("")
             .map( c => parseInt ( c, 16 ) * parseInt ( c, 16 ) ) :
-              this.color.length === 7 ? [
+              color.length === 7 ? [
                   parseInt ( color.slice(1,3), 16 ),
                   parseInt ( color.slice(3,5), 16 ),
                   parseInt ( color.slice(5,7), 16 )

@@ -5,27 +5,16 @@ const Vue = require ( 'vue' )
 import vuetify from '../plugins/vuetify'
 Vue.use ( vuetify )
 
-// const store = require ( './DataStore.js' )
-
-// import rootStyles from 'CSS/root.css'
-// import mainStyles from 'CSS/main.css'
-// import forVuetifyStyles from 'CSS/forVuetify.css'
-// import fonts from 'CSS/googleFonts.css'
-
 import 'CSS/root.css'
 import 'CSS/main.css'
 import 'CSS/forVuetify.css'
 import 'CSS/googleFonts.css'
 
-let Parallax, Canvas, NavigationPanel, appFooter, QuizComponent, SignUpComponent, LoginComponent, UserInfo
-
-
 async function loadComponents () {
 
-		const store = ( await import ( /* webpackChunkName: "store" */ './DataStore.js' ) ).default;
-		console.log ( store );
+		// const store = ( await import ( /* webpackChunkName: "store" */ './DataStore.js' ) ).default;
 
-		[ Parallax, Canvas, NavigationPanel, appFooter, QuizComponent, SignUpComponent, LoginComponent, UserInfo ] =
+		let [ Parallax, Canvas, NavigationPanel, appFooter, QuizComponent, SignUpComponent, LoginComponent, UserInfo ] =
 		    ( await Promise.all ([
 						import ( /* webpackChunkName: "parallax" */ './parallax.js' ),
 						import ( /* webpackChunkName: "canvas" */ './CanvasComponent.js' ),
@@ -42,7 +31,7 @@ async function loadComponents () {
 		const Root = ( await import ( /* webpackChunkName: "root" */ __dirname + '/root.js' ) ).default
 
 		new Vue ({
-			store,
+			store: ( await import ( /* webpackChunkName: "store" */ './DataStore.js' ) ).default,
 			vuetify,
 			template: Markup.template,
 			data: Root.data,

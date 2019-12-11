@@ -1,9 +1,6 @@
 'use strict'
-
-// import Vue from 'vue'
+//
 const Vue = require ("vue")
-// import Vuex from 'vuex'
-
 const Vuex = require ("vuex")
 Vue.use ( Vuex )
 

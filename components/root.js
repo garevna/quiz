@@ -65,16 +65,16 @@ export default {
         this.sign_up_process = false
     })
 
-    this.$vuetify.theme = {
-        primary: '#234',
-        secondary: '#fa0',
-        accent: '#f50',
-        error: '#d00',
-        info: '#09b',
-        success: '#050',
-        warning: '#fa0',
-        codeSection: "#00000000"
-    }
+    // this.$vuetify.theme = {
+    //     primary: '#234',
+    //     secondary: '#fa0',
+    //     accent: '#f50',
+    //     error: '#d00',
+    //     info: '#09b',
+    //     success: '#050',
+    //     warning: '#fa0',
+    //     codeSection: "#00000000"
+    // }
 
     this.getCookies ()
         .then ( this.sign_in_process = !this.login ? true : false )
