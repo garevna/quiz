@@ -1,10 +1,8 @@
 'use strict'
 
-// const fs = require('fs')
 const path = require('path')
-// const glob = require("glob")
 const webpack = require("webpack")
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 module.exports = {
@@ -122,14 +120,7 @@ module.exports = {
       ]
     },
     plugins: [
-      new BundleAnalyzerPlugin(),
-      // new VuetifyLoaderPlugin({
-      //   match (originalTag, { kebabTag, camelTag, path, component }) {
-      //     if (kebabTag.startsWith('core-')) {
-      //       return [camelTag, `import ${camelTag} from '@/components/core/${camelTag.substring(4)}.vue'`]
-      //     }
-      //   }
-      // })
+      // new BundleAnalyzerPlugin(),
     ],
 
 }

@@ -107,7 +107,7 @@ const Canvas = (
           }
       },
       clickHandler () {
-          
+
           if ( !this.canvas.points.length ) {
               this.init()
               this.mode =  "draw"

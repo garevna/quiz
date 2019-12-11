@@ -79,7 +79,6 @@ const LoginComponent = ( 'login-component', {
 
 			this.validPassword ? this.setUserData () : null
 			this.$root.$emit ( "sign-in-finished" )
-			console.log ( this.$root.$store.state.userInfo )
 		},
 
     exit () {
@@ -89,7 +88,6 @@ const LoginComponent = ( 'login-component', {
     setUserData () {
           document.cookie = `user=${this.login}`
           document.cookie = `pass=${this.user.passHash}`
-					console.log ( this.user )
           this.$root.$store.commit ( 'setUser', {
 							login: this.login,
 							name: this.user.name,

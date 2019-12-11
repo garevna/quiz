@@ -132,7 +132,6 @@ const SignUpComponent = ( 'sign-up-component', {
             method: "POST",
             body: formData
       }).then ( response => {
-          if ( response.ok ) {
 
             document.cookie = `user=${login}`
             document.cookie = `pass=${this.user.passHash}`
@@ -145,7 +144,7 @@ const SignUpComponent = ( 'sign-up-component', {
       					photoURL: URL.createObjectURL ( this.theFile ),
                 passHash: this.user.passHash
     				})
-          }
+            this.exit()
       })
     },
   },

@@ -12,8 +12,6 @@ import 'CSS/googleFonts.css'
 
 async function loadComponents () {
 
-		// const store = ( await import ( /* webpackChunkName: "store" */ './DataStore.js' ) ).default;
-
 		let [ Parallax, Canvas, NavigationPanel, appFooter, QuizComponent, SignUpComponent, LoginComponent, UserInfo ] =
 		    ( await Promise.all ([
 						import ( /* webpackChunkName: "parallax" */ './parallax.js' ),
