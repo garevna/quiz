@@ -182,11 +182,13 @@ export default new Vuex.Store ({
 
         let formData = await response.formData()
 
+        let ava = formData.get( "avatar" )
+
         return {
             name:       formData.get( "name" ),
             fname:      formData.get( "lastName" ),
             passHash:   formData.get( "passHash" ),
-            photoURL:   URL.createObjectURL ( formData.get( "avatar" ) ),
+            photoURL:   ava instanceof Object ? URL.createObjectURL ( ava ) : null,
             registered: formData.get( "registered" ),
             results:    JSON.parse ( formData.get ( "results" ) )
         }
@@ -214,7 +216,10 @@ export default new Vuex.Store ({
           fetch ( `https://garevna-js-quiz.glitch.me/form/${context.state.userInfo.login}`, {
               method: "PATCH",
               body: formData
-          }).then ( response => console.log ( "Results updated: ", response.ok ) )
+          }).then (
+            response => console.clear (),
+            error => console.warn ( error )
+          )
       }
   }
 })

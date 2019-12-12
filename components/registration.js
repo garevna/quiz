@@ -141,7 +141,7 @@ const SignUpComponent = ( 'sign-up-component', {
       					fname: this.user.lastName,
       					name: this.user.name,
                 registered: new Date().toLocaleDateString(),
-      					photoURL: URL.createObjectURL ( this.theFile ),
+      					photoURL: this.theFile ? URL.createObjectURL ( this.theFile ) : null,
                 passHash: this.user.passHash
     				})
             this.exit()

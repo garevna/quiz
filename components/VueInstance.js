@@ -52,6 +52,6 @@ async function loadComponents () {
 }
 
 loadComponents ().then (
-		response => console.log ( response ),
+		response => console.clear(),
 		error => console.warn ( error )
 )
