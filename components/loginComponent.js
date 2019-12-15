@@ -76,13 +76,13 @@ const LoginComponent = ( 'login-component', {
     },
 
 		enter () {
-
 			this.validPassword ? this.setUserData () : null
 			this.$root.$emit ( "sign-in-finished" )
 		},
 
     exit () {
         this.$root.$emit ( "sign-in-finished" )
+        console.clear()
     },
 
     setUserData () {
@@ -102,6 +102,9 @@ const LoginComponent = ( 'login-component', {
 
   created () {
       this.getLogins().then ( () => this.stage = 1 )
+  },
+  mounted () {
+    console.clear()
   },
 
   template: `

@@ -83,6 +83,9 @@ const NavigationPanel = {
             this.$root.$emit ( 'start-quiz', val )
         }
     },
+    mounted () {
+      console.clear()
+    },
     components: {
 
     }

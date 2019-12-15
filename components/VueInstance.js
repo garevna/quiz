@@ -2,7 +2,7 @@ const path = require('path')
 
 const Vue = require ( 'vue' )
 
-import vuetify from '../plugins/vuetify'
+import vuetify from '../plugins/vuetify-long.js'
 Vue.use ( vuetify )
 
 import 'CSS/root.css'
@@ -28,6 +28,7 @@ async function loadComponents () {
 		const Markup = ( await import ( /* webpackChunkName: "root_template" */ __dirname + '/root_template.js' ) ).default
 		const Root = ( await import ( /* webpackChunkName: "root" */ __dirname + '/root.js' ) ).default
 
+
 		new Vue ({
 			store: ( await import ( /* webpackChunkName: "store" */ './DataStore.js' ) ).default,
 			vuetify,
@@ -46,6 +47,7 @@ async function loadComponents () {
 					'parallax-back' : Parallax,
 					'canvas-element': Canvas
 			},
+
 		}).$mount ( '#JS-quiz' )
 
 		return "Application is ready now!"

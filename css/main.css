@@ -86,6 +86,28 @@ input[type="checkbox"] {
   text-shadow: 1px 1px 1px #00000090;
 }
 
+.scroll-container {
+  position: absolute;
+  top: 10%;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  padding: 32px 16px;
+  background: #00000090;
+  border: solid 1px white;
+  overflow-y: auto;
+}
+
+.scrolled-from-left {
+  padding: 10px 20px;
+  line-height: 1.0rem;
+  opacity: 0;
+  color: white;
+  width: max-content;
+  transform: translate3d(-300px, 0, 0);
+  transition: 1.5s all cubic-bezier(0.39, 0.575, 0.565, 1);
+}
+
 ::-webkit-scrollbar {
 	width: 7px;
 	height: 7px;

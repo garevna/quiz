@@ -4,13 +4,11 @@ const Canvas = (
     data: function () {
       return {
         mode: "draw",
-        canvas: document.getElementById ( "canvas" )
+        canvas: null,
+        image: document.createElement ( "img" ),
       }
     },
     computed: {
-      mainSize () {
-        return this.dimension ? Math.min ( ...this.dimension.split(",").map(item => Number( item.trim() ) ) ) : 100
-      },
       imageWidth () {
         return this.width ? this.width <= 200 ? this.width : 200 : 100
       },
@@ -31,9 +29,8 @@ const Canvas = (
       }
     },
     template: `
-      <figure style="width:300px;height:300px;">
-        <img id="canvas-image" src="./images/js-icon.svg" style="display:none"/>
-        <canvas id="canvas"
+      <figure style="width:300px;height:300px;" id="garevna-canvas--figure">
+        <canvas id="garevna-canvas"
                 :width="canvasWidth"
                 :height="canvasHeight">
         </canvas>
@@ -41,11 +38,7 @@ const Canvas = (
       `,
     methods: {
       init () {
-          this.canvas.style = `
-              position: absolute;
-              top: ${this.offsetTop}px;
-              left:${this.offsetLeft}px;
-          `
+
           this.createStaticPoints()
           this.canvas.points = []
           this.staticPoints.forEach (
@@ -53,7 +46,6 @@ const Canvas = (
                   new CanvasPoint ( this.canvas, this.ctx, target )
               )
           );
-
       },
       loop () {
 
@@ -61,7 +53,6 @@ const Canvas = (
               this.ctx.clearRect ( 0, 0, this.canvas.width, this.canvas.height )
               this[ this.mode ]()
           }
-
 
           requestAnimationFrame ( this.loop.bind ( this ) )
       },
@@ -83,6 +74,7 @@ const Canvas = (
               this.mode = "draw";
           }
       },
+
       createStaticPoints () {
 
           this.staticPoints = [];
@@ -91,8 +83,8 @@ const Canvas = (
               .getPropertyValue( '--primary' );
 
           this.ctx.clearRect ( 0, 0, this.canvas.width, this.canvas.height );
-          let canvasImage = document.getElementById ( "canvas-image" )
-          this.ctx.drawImage( canvasImage, 0, 0, this.width || 80, this.height || 80 );
+
+          this.ctx.drawImage( this.image, 0, 0, this.width || 80, this.height || 80 );
 
           const imageData = this.ctx.getImageData( 0, 0, this.canvas.width, this.canvas.height );
           let ctxData = imageData.data;
@@ -116,15 +108,16 @@ const Canvas = (
           this.loop()
       }
     },
-    mounted: function () {
-      this.canvas = document.getElementById ( "canvas" )
+    mounted () {
+
+      this.canvas = document.getElementById ( "garevna-canvas" )
       this.canvas.style = `
           position: absolute;
           bottom: 10px;
           right:20px;
       `
-      canvas.width = 250
-      canvas.height = 200
+      this.canvas.width = 250
+      this.canvas.height = 200
       this.canvas.onclick = this.clickHandler
 
       this.canvas.maxDistance = Math.min ( this.canvas.width, this.canvas.height )
@@ -133,9 +126,13 @@ const Canvas = (
 
       this.ctx = this.canvas.getContext ( "2d" )
       this.staticText = this.text || ""
+      this.image.src = this.imageURL || "./images/js-icon.svg"
+      this.mode = "draw"
+
       this.init()
       this.loop()
-    },
+      console.clear()
+    }
   }
 )
 

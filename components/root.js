@@ -26,14 +26,22 @@ export default {
       mainMenuItems () { return this.$store.getters.mainMenuItems },
       quizReady () { return this.$store.state.quizReady },
       showFooter () { return !this.startQuiz && this.winHeight > 700 },
+      showSVG () {
+        return !this.showInfo && !this.sign_in_process && !this.sign_up_process && !this.startQuiz
+      }
   },
 
   mounted () {
 
     this.getMainData()
-        .then ( response => console.log ( response ) )
+        .then (
+          response => console.clear(),
+          error => console.warn ( "Something wrong...", error )
+        )
 
     let folderName = decodeURI ( location.hash ).slice(1).trim()
+
+
 
     this.$on ( 'start-quiz', function ( val ) {
         !this.login ? this.sign_in_process = true : this.startQuiz = true
@@ -77,7 +85,7 @@ export default {
     // }
 
     this.getCookies ()
-        .then ( this.sign_in_process = !this.login ? true : false )
+        .then ( () => this.sign_in_process = !this.login ? true : false )
     this.windowResized ()
   },
 

@@ -112,6 +112,7 @@ const SignUpComponent = ( 'sign-up-component', {
 
     exit () {
         this.$root.$emit ( "sign-up-finished" )
+        console.clear()
     },
 
     saveUserData () {
@@ -144,6 +145,7 @@ const SignUpComponent = ( 'sign-up-component', {
       					photoURL: this.theFile ? URL.createObjectURL ( this.theFile ) : null,
                 passHash: this.user.passHash
     				})
+            this.$root.$store.commit ( "setUserResults", {} )
             this.exit()
       })
     },

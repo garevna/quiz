@@ -11,7 +11,7 @@ export default {
 						     src="https://cdn.glitch.com/a4e0a9fd-ea7b-47cf-b52a-48fd6359c559%2Fjs-icon.svg"
 								 @click.stop = "drawer = !drawer">-->
 
-						<div class="center-js" @click = "drawer = !drawer">
+						<div class="center-js" @click = "drawer = !drawer" v-show="showSVG">
 						    <canvas-element color="#fa0" width="100" height="90"></canvas-element>
 						</div>
 
