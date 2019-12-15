@@ -7,19 +7,15 @@ export default {
 				<v-app-bar app class="dark-glass"
 									 v-if="mainMenuReady && !startQuiz && (!sign_up_process) && (!sign_in_process)">
 
-						<!--<img class="center-js"
-						     src="https://cdn.glitch.com/a4e0a9fd-ea7b-47cf-b52a-48fd6359c559%2Fjs-icon.svg"
-								 @click.stop = "drawer = !drawer">-->
-
 						<div class="center-js" @click = "drawer = !drawer" v-show="showSVG">
 						    <canvas-element color="#fa0" width="100" height="90"></canvas-element>
 						</div>
 
 						<v-toolbar-title v-if="login">
-							<v-avatar v-if="user.photoURL">
-								<img :src="user.photoURL">
+							<v-avatar v-if="userPhotoURL">
+								<img :src="userPhotoURL">
 							</v-avatar>
-							{{user.fname + " " + user.name}}
+							{{userFname + " " + userName}}
 						</v-toolbar-title>
 						<v-spacer></v-spacer>
 						<v-menu offset-y>
@@ -67,7 +63,7 @@ export default {
 					</v-tooltip>
 				</v-footer>
 
-				<quiz-component v-if = "quizReady && startQuiz">
+				<quiz-component v-if="login && (!sign_up_process) && (!sign_in_process) && quizReady && startQuiz">
 				</quiz-component>
 		<nav-panel :states = "mainMenuItems"></nav-panel>
 		<user-info :showInfo="showInfo"></user-info>

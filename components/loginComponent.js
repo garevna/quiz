@@ -76,7 +76,8 @@ const LoginComponent = ( 'login-component', {
     },
 
 		enter () {
-			this.validPassword ? this.setUserData () : null
+			this.validPassword ? this.setUserData () :
+          this.$root.$store.commit ( "breakUser" )
 			this.$root.$emit ( "sign-in-finished" )
 		},
 
@@ -88,15 +89,6 @@ const LoginComponent = ( 'login-component', {
     setUserData () {
           document.cookie = `user=${this.login}`
           document.cookie = `pass=${this.user.passHash}`
-          this.$root.$store.commit ( 'setUser', {
-							login: this.login,
-							name: this.user.name,
-							fname: this.user.fname,
-							registered: this.user.registered,
-							photoURL: this.user.photoURL,
-							passHash: this.user.passHash
-					})
-					this.$root.$store.commit ( "setUserResults", this.user.results )
     },
   },
 

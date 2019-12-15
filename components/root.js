@@ -13,15 +13,18 @@ export default {
       },
       sign_in_process: false,
       sign_up_process: false,
-      login: null,
       showInfo: false,
       winHeight: window.innerHeight,
-      winWidth: window.innerWidth
+      winWidth: window.innerWidth,
     }
   },
 
   computed: {
-      user () { return this.$store.state.userInfo },
+      login () { return this.$store.state.userInfo.login },
+      userName () { return this.$store.state.userInfo.name },
+      userFname () { return this.$store.state.userInfo.fname },
+      userPhotoURL () { return this.$store.state.userInfo.photoURL },
+      userRegistered () { return this.$store.state.userInfo.registered },
       mainMenuReady () { return this.$store.getters.mainMenuReady },
       mainMenuItems () { return this.$store.getters.mainMenuItems },
       quizReady () { return this.$store.state.quizReady },
@@ -35,7 +38,7 @@ export default {
 
     this.getMainData()
         .then (
-          response => console.clear(),
+          response => null,
           error => console.warn ( "Something wrong...", error )
         )
 
@@ -119,21 +122,9 @@ export default {
         }
     },
 
-    signOut () {
-        this.$store.commit( "setUser", {
-          login: "",
-          name: "",
-          fname: "",
-          photoURL: "",
-          registered: ""
-        })
-        this.$store.commit ( "setUserResults", {} )
-        this.login = null
-    },
-
     async getCookies () {
 
-        this.login = Object.assign ( {}, ...document.cookie.split ( "; " )
+        let login = Object.assign ( {}, ...document.cookie.split ( "; " )
             .map ( item => item.split ( "=" ) )
                 .map (
                     item => Object.assign (
@@ -142,20 +133,11 @@ export default {
                 )
         ).user
 
-        if ( !this.login ) return this.signOut()
+        if ( !login ) this.$store.commit( "breakUser" )
 
-        let response = await this.$store.dispatch ( "getUserInfo", this.login )
-        if ( response.error ) return this.signOut()
+        let response = await this.$store.dispatch ( "getUserInfo", login )
 
-        this.$store.commit ( "setUser", {
-            login: this.login,
-            name: response.name,
-            fname: response.fname,
-            photoURL: response.photoURL,
-            registered: response.registered
-        })
-
-        this.$store.commit ( "setUserResults", response.results )
+        if ( response.error ) this.$store.commit( "breakUser" )
     },
 
     windowResized () {

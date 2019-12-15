@@ -28,9 +28,15 @@ export default new Vuex.Store ({
           passHash: "",
           photoURL: ""
       },
+      userResultsJSON : "",
       userResults: {}
   },
   getters: {
+
+    getUserResults ( state ) {
+
+    },
+
     quizLevelData: state => {
         let quiz = {
             balls: state.quizRawData.split ( /[\s]*____quizBalls____[\s]*/ )[1],
@@ -149,9 +155,21 @@ export default new Vuex.Store ({
         state.mainMenuOptions = mainData.map ( item => item.name )
     },
 
-    setUser: ( state, userData ) => state.userInfo = JSON.parse( JSON.stringify ( userData ) ),
+    breakUser ( state ) {
+      [ "login", "fname", "name", "registered", "passHash", "photoURL"].forEach (
+          prop => Vue.set ( state.userInfo, prop, null )
+      )
+    },
 
-    setUserResults: ( state, results ) => state.userResults = results,
+    setUser: ( state, userData ) => {
+
+        [ "login", "fname", "name", "registered", "passHash", "photoURL"].forEach (
+            prop => Vue.set ( state.userInfo, prop, userData [prop] )
+        )
+
+    },
+
+    setUserResults: ( state, results ) => state.userResults = JSON.parse( JSON.stringify ( results ) ),
 
     setCookie: state => {
         document.cookie = `user=${state.userInfo.login}`
@@ -164,16 +182,19 @@ export default new Vuex.Store ({
         state.userResults [ state.quizName ].push (
               Math.round ( state.quizData.score * 100 / state.quizData.maxScore ) + "%"
         )
+
+        state.userResultsJSON = JSON.stringify ( state.userResults )
+
         localStorage.setItem (
             `${state.userInfo.fname} ${state.userInfo.name}`,
-            JSON.stringify ( state.userResults )
+            state.userResultsJSON
         )
-    }
+    },
   },
 
   actions: {
 
-      async getUserInfo ( context, login ) {
+      async getUserInfo ( { commit, state }, login ) {
         let error = null
         let response = await fetch ( `https://garevna-js-quiz.glitch.me/forms/${login}` )
         if ( response.headers.get ( "Content-Type" ).indexOf ( "application/json" ) === 0 ) {
@@ -184,14 +205,19 @@ export default new Vuex.Store ({
 
         let ava = formData.get( "avatar" )
 
-        return {
+        commit ( "setUser", {
+            login:      login,
             name:       formData.get( "name" ),
             fname:      formData.get( "lastName" ),
             passHash:   formData.get( "passHash" ),
             photoURL:   ava instanceof Object ? URL.createObjectURL ( ava ) : null,
             registered: formData.get( "registered" ),
-            results:    JSON.parse ( formData.get ( "results" ) )
-        }
+        })
+
+        state.userResultsJSON = formData.get ( "results" )
+        commit ( "setUserResults", JSON.parse ( state.userResultsJSON ) )
+
+        return state.userInfo
       },
 
       getQuizData ( context, params ) {
@@ -217,7 +243,7 @@ export default new Vuex.Store ({
               method: "PATCH",
               body: formData
           }).then (
-            response => console.clear (),
+            response => null,
             error => console.warn ( error )
           )
       }

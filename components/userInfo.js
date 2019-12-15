@@ -14,13 +14,14 @@ const UserInfo = {
         user () {
             return this.$root.$store.state.userInfo
         },
+        userResults () {
+          return JSON.parse ( this.$root.$store.state.userResultsJSON )
+        },
         resultsHeaders () {
-            return Object.keys( this.$root.$store.state.userResults )
+            return Object.keys( this.userResults )
         },
         results () {
-          return Object.values (
-              this.$root.$store.state.userResults
-          )
+          return Object.values ( this.userResults )
         },
     },
 

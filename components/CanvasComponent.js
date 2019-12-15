@@ -131,7 +131,7 @@ const Canvas = (
 
       this.init()
       this.loop()
-      console.clear()
+      // console.clear()
     }
   }
 )

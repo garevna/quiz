@@ -137,7 +137,7 @@ const QuizLevel = {
       this.$root.$on (
         "test-results",
         function ( testResult ) {
-          console.log ( testResult )
+          // console.log ( testResult )
         }
       )
   },

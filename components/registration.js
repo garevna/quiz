@@ -137,15 +137,8 @@ const SignUpComponent = ( 'sign-up-component', {
             document.cookie = `user=${login}`
             document.cookie = `pass=${this.user.passHash}`
 
-            this.$root.$store.commit ( 'setUser', {
-                login: login,
-      					fname: this.user.lastName,
-      					name: this.user.name,
-                registered: new Date().toLocaleDateString(),
-      					photoURL: this.theFile ? URL.createObjectURL ( this.theFile ) : null,
-                passHash: this.user.passHash
-    				})
-            this.$root.$store.commit ( "setUserResults", {} )
+            this.$root.$store.dispatch ( "getUserInfo", login )
+
             this.exit()
       })
     },
